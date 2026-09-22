@@ -1,6 +1,11 @@
 name: Validate, build and publish
 
-# PDFs are incremental only. Zenodo deposit is in zenodo-articles.yml.
+# Runs on every push to main. Validation is a hard gate: if any article fails,
+# nothing below runs and the live site keeps the last good deploy.
+#
+# PDFs here are incremental (render_changed_pdfs). Zenodo deposit + DOI embed
+# lives in zenodo-articles.yml (runs after this workflow succeeds). Do not
+# call zenodo_articles.py here or you will double-deposit.
 
 on:
   push:
@@ -18,6 +23,7 @@ concurrency:
 
 jobs:
   build:
+    # Skip pure ledger-only commits from the Zenodo workflow
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
     steps:

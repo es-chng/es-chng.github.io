@@ -1,14 +1,50 @@
-# Zenodo DOI ledger for individual articles.
-# Written automatically by scripts/zenodo_articles.py.
-# Do not edit by hand unless you know the deposition IDs.
-#
-# slug:
-#   doi: "10.5281/zenodo.1234567"
-#   concept_doi: "10.5281/zenodo.1234566"
-#   deposition_id: 1234567
-#   content_hash: "..."
-#   deposited_at: "2026-09-22T12:00:00Z"
-#   title: "..."
-#
-# Layouts prefer ledger DOIs over placeholder front-matter DOIs.
-{}
+her2-ultralow:
+  concept_doi: 10.5072/zenodo.606896
+  content_hash: c612088dad7fc2ff86d7e2024ce6a7f7f963aa63cfa68697f6cf6ddce5c992a5
+  deposited_at: '2026-09-22T11:01:01Z'
+  deposition_id: 606897
+  doi: 10.5072/zenodo.606897
+  title: 'HER2-ultralow: how do I recognise it, and how sure can I be?'
+intramucosal-adenocarcinoma:
+  concept_doi: 10.5072/zenodo.606898
+  content_hash: 221a20098a0cc6c19452c6fba348bda2335450c7fcf3ad32a113a5ad6d54c42f
+  deposited_at: '2026-09-22T11:01:05Z'
+  deposition_id: 606899
+  doi: 10.5072/zenodo.606899
+  title: 'Intramucosal adenocarcinoma in the colon: does the label matter?'
+mmr-ihc:
+  concept_doi: 10.5072/zenodo.606900
+  content_hash: 1a595c7fd7ada9fd76fd1cff9f94f5fa5cdc58afb0080dc31b51f48591a4bc75
+  deposited_at: '2026-09-22T11:01:09Z'
+  deposition_id: 606901
+  doi: 10.5072/zenodo.606901
+  title: 'Patchy MMR loss on IHC: how do I read it?'
+mock-base-only:
+  concept_doi: 10.5072/zenodo.606902
+  content_hash: 8dd5e6a61c598838810ae067e6d33863c81f0b6c0f93033f7e50953bdf3c5556
+  deposited_at: '2026-09-22T11:01:12Z'
+  deposition_id: 606903
+  doi: 10.5072/zenodo.606903
+  title: A mock article with only the base fields filled in
+mock-one-field:
+  concept_doi: 10.5072/zenodo.606904
+  content_hash: 4b2748d5f7c6949a62da90c49e99995bd1888f84658dc9fe8cc6fd1d3f976bac
+  deposited_at: '2026-09-22T11:01:15Z'
+  deposition_id: 606905
+  doi: 10.5072/zenodo.606905
+  title: A mock article testing exactly one schema field
+scanner-validation:
+  concept_doi: 10.5072/zenodo.606906
+  content_hash: 39e0b2cb9a262920c10fc45e165fd26d011deeea28488117a5054a09bba57f3c
+  deposited_at: '2026-09-22T11:01:18Z'
+  deposition_id: 606907
+  doi: 10.5072/zenodo.606907
+  title: 'Switching scanners: what do I need to re-validate before I trust the new
+    images?'
+toy-example-article:
+  concept_doi: 10.5072/zenodo.606908
+  content_hash: 807ff91894f3a1315524950fbcd646cfff5e8c6fdf7812ea00fd8fba5b6bbd62
+  deposited_at: '2026-09-22T11:01:22Z'
+  deposition_id: 606909
+  doi: 10.5072/zenodo.606909
+  title: A toy article using a completely different schema
