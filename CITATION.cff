@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use Schema Lab, please cite it as below."
+title: "Schema Lab: a schema-driven publishing engine for single-author microjournals"
+version: "0.1.0"
+date-released: "2026-09-22"
+type: software
+authors:
+  - family-names: Author
+    given-names: Example
+    # Replace with real name / ORCID once published
+    # orcid: "https://orcid.org/0000-0000-0000-0000"
+abstract: >-
+  Schema Lab is a standalone, schema-driven publishing prototype for a
+  single-author microjournal. Articles are defined by a named schema
+  (ordered fields with shape, style, and visibility). One small set of
+  templates produces consistent HTML pages, PDFs, and issue listings
+  without hard-coding field names. Built with Jekyll and ReportLab;
+  validated and deployed via GitHub Actions.
+keywords:
+  - schema-driven publishing
+  - microjournal
+  - Jekyll
+  - PDF generation
+  - single-author newsletter
+  - academic publishing
+license: MIT
+repository-code: "https://github.com/es-chng/schema-lab"
+# doi: "10.5281/zenodo.XXXXXXX"   # fill in after the first Zenodo release
+url: "https://es-chng.github.io"

@@ -1,0 +1,58 @@
+---
+layout: null
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title }}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+
+{%- comment -%}
+  STEP 1: base frame only. Everything in this block is fixed, schema-blind,
+  and drawn identically for every article regardless of which schema it uses.
+  It reads ONLY the ten base fields, never anything schema-specific.
+{%- endcomment -%}
+
+<article class="base-frame">
+  <header class="base-header">
+    <p class="base-badge">Volume {{ page.volume }}, Issue {{ page.issue }} · Article {{ page.order }}</p>
+    <h1>{{ page.title }}</h1>
+    <p class="base-authors">
+      {%- for a in page.authors -%}
+        {{ a.given }} {{ a.family }}{% unless forloop.last %}, {% endunless %}
+      {%- endfor -%}
+    </p>
+    <p class="base-date">Published {{ page.published_date | date: "%-d %B %Y" }}</p>
+  </header>
+
+  {%- assign schema = site.data[page.schema] -%}
+  {% include schema-slot.html schema=schema article=page %}
+
+  <footer class="base-footer">
+    {%- assign pdf_slug = page.name | remove: ".md" -%}
+    {%- comment -%}
+      Prefer a real DOI from the Zenodo ledger (written by scripts/zenodo_articles.py)
+      over a placeholder in the article front matter. Front-matter remains the
+      fallback for manually assigned DOIs.
+    {%- endcomment -%}
+    {%- assign ledger_entry = site.data.zenodo-ledger[pdf_slug] -%}
+    {%- assign display_doi = page.doi -%}
+    {%- if ledger_entry and ledger_entry.doi -%}
+      {%- assign display_doi = ledger_entry.doi -%}
+    {%- endif -%}
+    <p><a class="pdf-link" href="{{ '/files/' | append: pdf_slug | append: '.pdf' | relative_url }}">Download PDF</a></p>
+    {%- if display_doi and display_doi != "" -%}
+    <p>Pages {{ page.pages }} · <a href="https://doi.org/{{ display_doi }}">https://doi.org/{{ display_doi }}</a></p>
+    {%- else -%}
+    <p>Pages {{ page.pages }}</p>
+    {%- endif -%}
+    <p>Licence: {{ page.licence }}</p>
+  </footer>
+</article>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+title: Schema Lab
+description: A standalone test bed for the schema-driven publication module. Not a real journal.
+url: "https://es-chng.github.io"
+baseurl: ""   # this repo is the root user-pages site, so no subpath
+collections:
+  issues:
+    output: true
+    permalink: /issues/:name/
+  articles:
+    output: true
+    permalink: /articles/:name/
+defaults:
+  - scope: { path: "", type: articles }
+    values: { layout: article }
+  - scope: { path: "", type: issues }
+    values: { layout: issue }
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - requirements.txt
+  - CITATION.cff
+  - .zenodo.json
+  - scripts/
+  - tests/

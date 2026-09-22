@@ -1,0 +1,55 @@
+---
+layout: null
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ site.title }}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+<main class="prose-page home">
+  <h1>{{ site.title }}</h1>
+  <p class="lede">{{ site.description }}</p>
+  <p class="home-links">
+    <a href="{{ '/about/' | relative_url }}">About this newsletter</a>
+    &middot; <a href="{{ '/issues/' | relative_url }}">All issues</a>
+  </p>
+
+  <h2>Recent entries</h2>
+  {%- comment -%}
+    Shows the most recent articles across every issue, not just the latest
+    issue's own list -- a rolling newsletter is read by recency, not by which
+    batch an entry happened to be filed under. Reads only base fields (title,
+    published_date) plus each article's own nominated teaser field, the same
+    generic lookup _layouts/issue.html uses -- this page has no special-case
+    knowledge of any one schema either.
+  {%- endcomment -%}
+  {%- assign recent = site.articles | sort: "published_date" | reverse -%}
+  {%- assign recent = recent | slice: 0, 5 -%}
+  {%- if recent.size > 0 %}
+  <ol class="issue-toc">
+    {%- for article in recent -%}
+      {%- assign schema = site.data[article.schema] -%}
+      {%- assign teaser_field = nil -%}
+      {%- if schema -%}
+        {%- for f in schema.fields -%}{%- if f.teaser -%}{%- assign teaser_field = f -%}{%- endif -%}{%- endfor -%}
+      {%- endif -%}
+      <li class="toc-item">
+        <a href="{{ article.url | relative_url }}">{{ article.title }}</a>
+        <p class="toc-meta">{{ article.published_date | date: "%-d %B %Y" }}</p>
+        {%- if teaser_field -%}
+          {%- assign teaser_value = article[teaser_field.key] -%}
+          {%- if teaser_value %}<p class="toc-teaser">{{ teaser_value }}</p>{%- endif -%}
+        {%- endif -%}
+      </li>
+    {%- endfor %}
+  </ol>
+  {%- else %}
+  <p class="placeholder">No entries yet.</p>
+  {%- endif %}
+</main>
+</body>
+</html>

@@ -1,0 +1,38 @@
+# A deliberately different, throwaway schema, to test that the templates built
+# for "practice-update" work for ANY schema without modification.
+name: toy-example
+version: 1
+fields:
+  - key: category_tag
+    label: "Category"
+    shape: text
+    style: badge
+    visibility: public
+
+  - key: summary_points
+    label: "Summary points"
+    shape: list
+    style: plain
+    visibility: public
+
+  - key: comparison
+    label: "Comparison"
+    shape: table
+    style: table
+    visibility: public
+    columns: ["option", "verdict"]
+
+  - key: closing_thought
+    label: "Closing thought"
+    shape: text
+    style: opinion
+    visibility: public
+    teaser: true
+    max_chars: 200
+
+  - key: internal_note
+    label: "Internal note"
+    shape: text
+    style: plain
+    visibility: editor
+    optional: true

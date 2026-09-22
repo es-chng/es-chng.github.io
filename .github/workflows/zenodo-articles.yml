@@ -1,0 +1,96 @@
+name: Deposit article PDFs to Zenodo
+
+# Runs after a successful Pages build, or on demand.
+# Uses the same PDF cache strategy as the main Pages workflow.
+# DOIs are written only to _data/zenodo-ledger.yml (never into article
+# front matter) so this job cannot re-trigger itself.
+
+on:
+  workflow_run:
+    workflows: ["Validate, build and publish"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      live:
+        description: "Deposit to production zenodo.org (default is sandbox)"
+        required: false
+        type: boolean
+        default: false
+      force:
+        description: "Re-deposit even when content is unchanged"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write   # needed to commit the ledger update
+  actions: read
+
+concurrency:
+  group: zenodo-articles
+  cancel-in-progress: false
+
+jobs:
+  deposit:
+    # Only run when the Pages workflow succeeded, or when triggered manually
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # When triggered by workflow_run, check out the commit that was built
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install fonts used by the PDF renderer
+        run: sudo apt-get update && sudo apt-get install -y fonts-dejavu
+
+      # Rebuild PDFs for the deposit step (or restore from cache if available).
+      # We keep this self-contained so the deposit job does not depend on
+      # downloading the Pages artifact.
+      - name: Restore the PDF cache
+        uses: actions/cache@v4
+        with:
+          path: .pdf-cache
+          key: pdf-cache-zenodo-${{ github.run_id }}
+          restore-keys: |
+            pdf-cache-
+
+      - name: Build PDFs for new or changed articles
+        run: python scripts/render_changed_pdfs.py .pdf-cache .pdf-out
+
+      - name: Deposit to Zenodo
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+          # Production only when explicitly requested via workflow_dispatch
+          ZENODO_LIVE: ${{ (github.event_name == 'workflow_dispatch' && inputs.live) && '1' || '' }}
+          SITE_URL: ${{ vars.SITE_URL || 'https://es-chng.github.io' }}
+        run: |
+          EXTRA=""
+          if [ "${{ inputs.force }}" = "true" ]; then
+            EXTRA="--force"
+          fi
+          python scripts/zenodo_articles.py .pdf-out $EXTRA
+
+      - name: Commit ledger if it changed
+        run: |
+          if git diff --quiet -- _data/zenodo-ledger.yml 2>/dev/null; then
+            echo "Ledger unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _data/zenodo-ledger.yml
+          git commit -m "chore: update Zenodo DOI ledger [skip ci]"
+          git push
+        # [skip ci] prevents the Pages workflow from re-running solely
+        # because the ledger was updated.

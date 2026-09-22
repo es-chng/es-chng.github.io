@@ -1,0 +1,91 @@
+# Schema definition: "practice-update"
+# This is layer 2 only. It never mentions the ten base fields (title, authors,
+# corresponding_email, volume, issue, order, pages, published_date, doi, licence) —
+# those are handled by the fixed base frame, not by any schema.
+#
+# Each field declares:
+#   key       - the name used in an article's front matter
+#   label     - the heading shown to the reader
+#   shape     - text | list | table | boolean | date
+#   style     - plain | boxed | opinion | badge | table
+#   visibility- public | reviewer | editor | private
+#   teaser    - true on exactly one field: the one shown on the issue-listing page
+#   max_chars - only present where a hard cap applies (enforced at authoring time,
+#               not by the renderer)
+
+name: practice-update
+version: 1
+
+fields:
+  - key: issue_type
+    label: "Issue type"
+    shape: text
+    style: badge
+    visibility: public
+
+  - key: the_issue
+    label: "The issue"
+    shape: text
+    style: plain
+    visibility: public
+
+  - key: anchors
+    label: "Anchor papers"
+    shape: table
+    style: table
+    visibility: public
+    # "type" names the kind of evidence (guideline, RCT, cohort study, case
+    # series, expert consensus, audit, review) so a reader can weigh a claim
+    # without reading the citation string closely. This is deliberately the
+    # only evidence-classification field -- no grading, no scoring, no
+    # limitations column: that is the CAT-style machinery this format
+    # intentionally avoids, in favour of speed.
+    columns: ["citation", "type", "note"]
+
+  - key: solvable_now
+    label: "Practice recommendations"
+    shape: list
+    style: plain
+    visibility: public
+
+  - key: not_solved
+    label: "Unresolved questions"
+    shape: list
+    style: plain
+    visibility: public
+
+  - key: sample_wording
+    label: "Sample report wording"
+    shape: text
+    style: boxed
+    visibility: public
+    optional: true
+
+  - key: personal_perspective
+    label: "Personal perspective"
+    shape: text
+    style: opinion
+    visibility: public
+
+  - key: bottom_line
+    label: "Bottom line"
+    shape: text
+    style: boxed
+    visibility: public
+    teaser: true
+    max_chars: 400
+
+  - key: keywords
+    label: "Keywords"
+    shape: list
+    style: plain
+    visibility: public
+
+  - key: declarations
+    label: "Conflicts of interest"
+    shape: list
+    style: plain
+    visibility: public
+    # This is a single-author, non-peer-reviewed newsletter (see the About
+    # page): there is no editor or supervisor to disclose to privately, so
+    # this is public, not editor-only -- a reader can see it directly.

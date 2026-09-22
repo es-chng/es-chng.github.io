@@ -1,0 +1,33 @@
+{
+  "title": "Schema Lab: a schema-driven publishing engine for single-author microjournals",
+  "description": "Schema Lab is a standalone prototype that proves a design idea: an article can be defined as a schema (a named, ordered list of fields with shape, style, and visibility), and one small set of templates can turn any schema and any article using it into a correct webpage, a matching PDF, and a correct issue listing — without the templates ever hard-coding a field name.\n\nIt is intended as a reusable building block for single-author microjournals, practice-update series, or lightweight departmental publications that need consistent dual-format (HTML + PDF) output from simple Markdown + front matter.",
+  "creators": [
+    {
+      "name": "Author, Example"
+    }
+  ],
+  "keywords": [
+    "schema-driven publishing",
+    "microjournal",
+    "Jekyll",
+    "PDF generation",
+    "single-author newsletter",
+    "academic publishing",
+    "ReportLab"
+  ],
+  "license": "MIT",
+  "upload_type": "software",
+  "access_right": "open",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/es-chng/schema-lab",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://es-chng.github.io",
+      "relation": "isDocumentedBy",
+      "resource_type": "publication-other"
+    }
+  ]
+}

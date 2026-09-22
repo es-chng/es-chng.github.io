@@ -1,0 +1,14 @@
+# Zenodo DOI ledger for individual articles.
+# Written automatically by scripts/zenodo_articles.py.
+# Do not edit by hand unless you know the deposition IDs.
+#
+# slug:
+#   doi: "10.5281/zenodo.1234567"
+#   concept_doi: "10.5281/zenodo.1234566"
+#   deposition_id: 1234567
+#   content_hash: "..."
+#   deposited_at: "2026-09-22T12:00:00Z"
+#   title: "..."
+#
+# Layouts prefer ledger DOIs over placeholder front-matter DOIs.
+{}

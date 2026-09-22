@@ -1,0 +1,156 @@
+/* Academic register: one serif type family throughout, a near-monochrome
+   palette, small-caps labels rather than coloured badges, thin rules rather
+   than coloured boxes. Colour is used exactly once, for links.
+   Deliberately no external font load (no @import, no CDN) -- a system serif
+   stack keeps this self-contained, with no network dependency and no risk
+   of a flash of unstyled text if a remote font fails to load. */
+
+:root {
+  --ink: #1a1a1a;
+  --muted: #55534f;
+  --rule: #c9c5bc;
+  --rule-strong: #8a877d;
+  --paper: #fdfcfa;
+  --accent: #5c3d2e;      /* the one colour: a dark, muted sepia-brown, used only for links */
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #ffffff;
+  color: var(--ink);
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+main, .base-frame { max-width: 42rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+a { color: var(--accent); }
+
+.placeholder { border: none; color: var(--muted); font-style: italic; }
+
+/* ---- masthead / base frame (schema-blind, the same for every schema) ---- */
+.base-frame { border: none; padding-top: 2.5rem; }
+.base-badge {
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--rule);
+}
+.base-header h1 {
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0 0 0.9rem;
+}
+.base-authors { font-size: 1rem; font-style: italic; color: var(--ink); margin: 0 0 0.15rem; }
+.base-date { font-size: 0.9rem; color: var(--muted); margin: 0 0 1.75rem; }
+
+.schema-slot { border-top: none; border-bottom: none; padding: 0; margin: 0; }
+
+.base-footer {
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+.base-footer a { color: var(--accent); }
+.base-footer a.pdf-link {
+  display: inline-block;
+  background: none;
+  color: var(--accent);
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  font-weight: 400;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  text-decoration: none;
+}
+.base-footer a.pdf-link::before { content: "↓ "; }
+.base-footer a.pdf-link:hover { text-decoration: underline; }
+
+/* ---- schema-driven fields: styled generically by their declared "style", ---- */
+/* ---- never by which specific field they happen to be.                   ---- */
+.field { margin: 1.5rem 0; }
+.field-label {
+  font-size: 1rem;
+  font-weight: 600;
+  font-variant: small-caps;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem;
+  color: var(--ink);
+}
+.field-text { margin: 0; line-height: 1.65; }
+.field-list { margin: 0; padding-left: 1.3rem; }
+.field-list li { margin: 0.3rem 0; line-height: 1.6; }
+
+.field-table { width: 100%; border-collapse: collapse; font-size: 0.98rem; }
+.field-table th, .field-table td {
+  text-align: left; padding: 0.55rem 0.75rem 0.55rem 0;
+  border-bottom: 1px solid var(--rule); vertical-align: top;
+}
+.field-table th { font-weight: 600; font-variant: small-caps; letter-spacing: 0.02em; border-bottom: 1px solid var(--rule-strong); }
+
+/* "badge" style: a small-caps italic label, not a coloured pill. */
+.field-style-badge .field-text {
+  display: inline;
+  background: none;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-style: italic;
+  font-variant: small-caps;
+  padding: 0;
+  border-radius: 0;
+  letter-spacing: 0.02em;
+}
+
+/* "boxed" style: a thin rule above and below, not a filled box. */
+.field-style-boxed { border: none; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 0.9rem 0; background: none; }
+
+/* "opinion" style: set as a traditional block quotation -- indented, italic,
+   with a single thin rule, not a coloured highlight. */
+.field-style-opinion {
+  border-left: 2px solid var(--rule-strong);
+  padding-left: 1.1rem;
+  background: none;
+  font-style: italic;
+}
+.field-style-opinion .field-label { font-style: normal; }
+
+.field-missing { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif; color: var(--muted); font-size: 0.9rem; font-style: italic; margin: 0.4rem 0; }
+.field-missing::before { content: "[ "; }
+.field-missing::after { content: " ]"; }
+.field-render-error { color: #7a2e2e; font-style: italic; font-size: 0.92rem; }
+
+/* ---- issue listing ---- */
+.issue-toc { list-style: none; padding: 0; }
+.toc-item { padding: 1.4rem 0; border-top: 1px solid var(--rule); }
+.toc-item a { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif; font-size: 1.15rem; font-weight: 600; color: var(--ink); text-decoration: none; }
+.toc-item a:hover { color: var(--accent); }
+.toc-meta { font-size: 0.9rem; font-style: italic; color: var(--muted); margin: 0.3rem 0; }
+.toc-teaser { font-size: 0.98rem; color: var(--ink); margin: 0.4rem 0 0; line-height: 1.6; }
+.toc-teaser-missing { color: var(--muted); font-style: italic; }
+
+/* A plain static page (About, etc.), sharing the article's academic register. */
+.prose-page { max-width: 42rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+.prose-page h1 { font-size: 1.7rem; font-weight: 600; margin: 0 0 1.5rem; }
+.prose-page h2 { font-size: 1.15rem; font-variant: small-caps; letter-spacing: 0.03em; margin: 2rem 0 0.6rem; }
+.prose-page p { line-height: 1.65; margin: 0 0 1rem; }
+
+/* Homepage */
+.home .lede { font-size: 1.1rem; color: var(--muted); margin: 0 0 1rem; }
+.home .home-links { font-size: 0.95rem; margin: 0 0 2.5rem; }
+.home h2 { font-size: 1.15rem; font-variant: small-caps; letter-spacing: 0.03em; margin: 0 0 1rem; }
+
+/* Issues archive */
+.issue-list { list-style: none; padding: 0; margin: 1.5rem 0; }
+.issue-list li { padding: 0.9rem 0; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.3rem 1rem; }
+.issue-list a { font-weight: 600; }
+.issue-list-date { font-size: 0.9rem; font-style: italic; color: var(--muted); }

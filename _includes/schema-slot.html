@@ -1,0 +1,16 @@
+{%- comment -%}
+  Walks a schema's fields, in declared order, and renders each public field
+  via schema-field.html. This is the "outline builder + renderer" for the
+  webpage. It never references a field by name — only by iterating the schema.
+  Param: schema (the loaded schema data), article (the page, for field values)
+{%- endcomment -%}
+{%- assign schema = include.schema -%}
+{%- assign article = include.article -%}
+<div class="schema-slot">
+  {%- for field in schema.fields -%}
+    {%- if field.visibility == "public" -%}
+      {%- assign value = article[field.key] -%}
+      {% include schema-field.html field=field value=value %}
+    {%- endif -%}
+  {%- endfor -%}
+</div>
