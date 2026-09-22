@@ -27,11 +27,11 @@ mock-base-only:
   doi: 10.5072/zenodo.606903
   title: A mock article with only the base fields filled in
 mock-one-field:
-  concept_doi: 10.5072/zenodo.606904
-  content_hash: 4b2748d5f7c6949a62da90c49e99995bd1888f84658dc9fe8cc6fd1d3f976bac
-  deposited_at: '2026-09-22T11:01:15Z'
-  deposition_id: 606905
-  doi: 10.5072/zenodo.606905
+  concept_doi: 10.5072/zenodo.606944
+  content_hash: 3dc7997cea119efd26f58e116d309eab413db200b6a71851b057529bf73973a8
+  deposited_at: '2026-09-22T11:23:37Z'
+  deposition_id: 606945
+  doi: 10.5072/zenodo.606945
   title: A mock article testing exactly one schema field
 scanner-validation:
   concept_doi: 10.5072/zenodo.606906
@@ -42,9 +42,9 @@ scanner-validation:
   title: 'Switching scanners: what do I need to re-validate before I trust the new
     images?'
 toy-example-article:
-  concept_doi: 10.5072/zenodo.606908
-  content_hash: 807ff91894f3a1315524950fbcd646cfff5e8c6fdf7812ea00fd8fba5b6bbd62
-  deposited_at: '2026-09-22T11:01:22Z'
-  deposition_id: 606909
-  doi: 10.5072/zenodo.606909
+  concept_doi: 10.5072/zenodo.606946
+  content_hash: d18506739bc2688fda0006995f24908e4333bbd2930ecb7560c821b7ae404d7d
+  deposited_at: '2026-09-22T11:23:40Z'
+  deposition_id: 606947
+  doi: 10.5072/zenodo.606947
   title: A toy article using a completely different schema
