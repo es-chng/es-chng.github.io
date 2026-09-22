@@ -1,10 +1,5 @@
 name: Deposit article PDFs to Zenodo
 
-# Runs after a successful Pages build, or on demand.
-# Uses the same PDF cache strategy as the main Pages workflow.
-# DOIs are written only to _data/zenodo-ledger.yml (never into article
-# front matter) so this job cannot re-trigger itself.
-
 on:
   workflow_run:
     workflows: ["Validate, build and publish"]
@@ -23,7 +18,7 @@ on:
         default: false
 
 permissions:
-  contents: write   # needed to commit the ledger update
+  contents: write
   actions: read
 
 concurrency:
@@ -32,7 +27,6 @@ concurrency:
 
 jobs:
   deposit:
-    # Only run when the Pages workflow succeeded, or when triggered manually
     if: >
       github.event_name == 'workflow_dispatch' ||
       (github.event.workflow_run.conclusion == 'success' &&
@@ -41,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # When triggered by workflow_run, check out the commit that was built
+          token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - uses: actions/setup-python@v5
@@ -54,9 +48,6 @@ jobs:
       - name: Install fonts used by the PDF renderer
         run: sudo apt-get update && sudo apt-get install -y fonts-dejavu
 
-      # Rebuild PDFs for the deposit step (or restore from cache if available).
-      # We keep this self-contained so the deposit job does not depend on
-      # downloading the Pages artifact.
       - name: Restore the PDF cache
         uses: actions/cache@v4
         with:
@@ -65,24 +56,31 @@ jobs:
           restore-keys: |
             pdf-cache-
 
-      - name: Build PDFs for new or changed articles
-        run: python scripts/render_changed_pdfs.py .pdf-cache .pdf-out
-
-      - name: Deposit to Zenodo
+      - name: Deposit to Zenodo (reserve DOI → embed in PDF → upload → publish)
         env:
           ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
-          # Production only when explicitly requested via workflow_dispatch
           ZENODO_LIVE: ${{ (github.event_name == 'workflow_dispatch' && inputs.live) && '1' || '' }}
           SITE_URL: ${{ vars.SITE_URL || 'https://es-chng.github.io' }}
         run: |
+          if [ -z "$ZENODO_TOKEN" ]; then
+            echo "ZENODO_TOKEN is not set — cannot deposit."
+            exit 1
+          fi
+          mkdir -p .pdf-out
           EXTRA=""
           if [ "${{ inputs.force }}" = "true" ]; then
             EXTRA="--force"
           fi
           python scripts/zenodo_articles.py .pdf-out $EXTRA
+          mkdir -p .pdf-cache
+          cp -f .pdf-out/*.pdf .pdf-cache/ 2>/dev/null || true
 
       - name: Commit ledger if it changed
         run: |
+          if [ ! -f _data/zenodo-ledger.yml ]; then
+            echo "No ledger file."
+            exit 0
+          fi
           if git diff --quiet -- _data/zenodo-ledger.yml 2>/dev/null; then
             echo "Ledger unchanged."
             exit 0
@@ -90,7 +88,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add _data/zenodo-ledger.yml
-          git commit -m "chore: update Zenodo DOI ledger [skip ci]"
-          git push
-        # [skip ci] prevents the Pages workflow from re-running solely
-        # because the ledger was updated.
+          git commit -m "chore: update Zenodo DOI ledger [skip ci]" || exit 0
+          BRANCH="${{ github.event.workflow_run.head_branch || github.ref_name }}"
+          git push origin "HEAD:${BRANCH}"

@@ -12,6 +12,8 @@ published_date: 2026-09-01
 doi: "10.5281/zenodo.0000002"
 licence: "CC BY 4.0"
 schema: schema-practice-update
+schema_version: 1
+status: draft
 issue_type: "Diagnostic issue"
 the_issue: "This is the only schema field filled in, on purpose, to test the text/plain shape in isolation before adding anything else."
 solvable_now:

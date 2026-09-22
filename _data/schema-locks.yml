@@ -9,3 +9,9 @@ schema-practice-update:
   - mmr-ihc.md
   - scanner-validation.md
   version: 1
+schema-toy-example:
+  content_hash: b007584493eaa8cb1a59a07b9d73a996a1646182519a658bd0a053c56685af75
+  locked_at: '2026-09-22T11:13:06Z'
+  locked_by:
+  - toy-example-article.md
+  version: 1

@@ -67,8 +67,14 @@ def is_placeholder_doi(doi) -> bool:
 
 
 def is_published(fm: dict, slug: str, ledger: dict) -> bool:
-    """An article is published if explicitly marked, or has a real DOI, or is in the Zenodo ledger."""
+    """An article is published if explicitly marked, or has a real DOI, or is in the Zenodo ledger.
+
+    Explicit status: draft | unpublished always wins (mocks can sit in the ledger
+    from a test deposit without triggering immutability rules).
+    """
     status = str(fm.get("status") or "").strip().lower()
+    if status in ("draft", "unpublished", "test"):
+        return False
     if status in ("published", "live"):
         return True
     if fm.get("doi") and not is_placeholder_doi(fm.get("doi")):

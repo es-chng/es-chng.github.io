@@ -12,6 +12,8 @@ published_date: 2026-09-01
 doi: "10.5281/zenodo.0000009"
 licence: "CC BY 4.0"
 schema: schema-toy-example
+schema_version: 1
+status: draft
 category_tag: "Toy category"
 summary_points:
   - "This schema has none of the practice-update fields."

@@ -16,10 +16,3 @@ defaults:
     values: { layout: issue }
 exclude:
   - README.md
-  - Gemfile
-  - Gemfile.lock
-  - requirements.txt
-  - CITATION.cff
-  - .zenodo.json
-  - scripts/
-  - tests/
