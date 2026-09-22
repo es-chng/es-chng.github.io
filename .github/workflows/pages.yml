@@ -1,16 +1,11 @@
 name: Validate, build and publish
 
-# Runs on every push to main. Validation runs first: if any article fails its
-# schema's checks, the job stops there and nothing below it runs -- the site
-# keeps serving whatever was last published successfully.
+# Runs on every push to main. Validation is a hard gate: if any article fails,
+# nothing below runs and the live site keeps the last good deploy.
 #
-# PDF + DOI flow when ZENODO_TOKEN is set:
-#   1. Prereserve DOI on Zenodo
-#   2. Render PDF with that DOI in the footer
-#   3. Upload PDF and publish the deposition
-#   4. Write DOI to _data/zenodo-ledger.yml (committed with [skip ci])
-# Without the token, PDFs still build locally via render_changed_pdfs.py
-# (placeholder DOIs only).
+# PDFs here are incremental (render_changed_pdfs). Zenodo deposit + DOI embed
+# lives in zenodo-articles.yml (runs after this workflow succeeds). Do not
+# call zenodo_articles.py here or you will double-deposit.
 
 on:
   push:
@@ -18,7 +13,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -28,7 +23,7 @@ concurrency:
 
 jobs:
   build:
-    # Skip pure ledger-only commits from the previous run
+    # Skip pure ledger-only commits from the Zenodo workflow
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
     steps:
@@ -37,6 +32,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
@@ -49,6 +45,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.3"
+
       - name: Install Jekyll
         run: bundle install
 
@@ -69,45 +66,10 @@ jobs:
           restore-keys: |
             pdf-cache-
 
-      # PDFs: with ZENODO_TOKEN → reserve DOI, embed in PDF, upload, publish.
-      # Without token → incremental local PDFs (placeholder DOI in footer only).
-      - name: Build PDFs (and deposit to Zenodo when token is set)
-        env:
-          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
-          ZENODO_LIVE: ${{ vars.ZENODO_LIVE }}
-          SITE_URL: ${{ vars.SITE_URL || 'https://es-chng.github.io' }}
+      - name: Build a PDF for every new or changed article
         run: |
-          mkdir -p _site/files .pdf-cache
-          if [ -z "$ZENODO_TOKEN" ]; then
-            echo "No ZENODO_TOKEN — building PDFs without Zenodo deposit."
-            python scripts/render_changed_pdfs.py .pdf-cache _site/files
-          else
-            echo "ZENODO_TOKEN present — reserve DOI → embed in PDF → upload → publish."
-            python scripts/zenodo_articles.py _site/files
-            cp -f _site/files/*.pdf .pdf-cache/ 2>/dev/null || true
-          fi
-
-      - name: Commit Zenodo ledger if updated
-        env:
-          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
-        run: |
-          if [ -z "$ZENODO_TOKEN" ]; then
-            echo "No token; skip ledger commit."
-            exit 0
-          fi
-          if [ ! -f _data/zenodo-ledger.yml ]; then
-            echo "No ledger file."
-            exit 0
-          fi
-          if git diff --quiet -- _data/zenodo-ledger.yml 2>/dev/null; then
-            echo "Ledger unchanged."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add _data/zenodo-ledger.yml
-          git commit -m "chore: update Zenodo DOI ledger [skip ci]"
-          git push
+          mkdir -p _site/files
+          python scripts/render_changed_pdfs.py .pdf-cache _site/files
 
       - uses: actions/upload-pages-artifact@v3
 
