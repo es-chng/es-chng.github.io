@@ -90,7 +90,7 @@ jobs:
             cp -f _site/files/*.pdf .pdf-cache/ 2>/dev/null || true
           fi
 
-      - name: Commit Zenodo ledger if updated
+       - name: Commit Zenodo ledger if updated
         env:
           ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
         run: |
@@ -109,8 +109,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add _data/zenodo-ledger.yml
-          git commit -m "chore: update Zenodo DOI ledger [skip ci]"
-          git push
+          git commit -m "chore: update Zenodo DOI ledger [skip ci]" || exit 0
+          git push origin "HEAD:${GITHUB_REF_NAME}"
 
       - uses: actions/upload-pages-artifact@v3
 
