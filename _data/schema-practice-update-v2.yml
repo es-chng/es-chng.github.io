@@ -1,0 +1,143 @@
+# Production schema: practice-update-v2
+#
+# Purpose: a rigorous, transparent, single-author evidence commentary or
+# practice-update article. This schema is compatible with Schema Lab's current
+# generic renderers: text, list, table, boolean, and date shapes; styles are
+# plain, boxed, opinion, badge, and table.
+#
+# Editorial principle: distinguish the practical question, source base,
+# interpretation, recommendation, uncertainty, and personal judgement.
+#
+# Before publishing, the article should also include the ten fixed base fields
+# required by the platform and schema_version: 2.
+
+name: practice-update-v2
+version: 2
+
+fields:
+  - key: article_type
+    label: "Article type"
+    shape: text
+    style: badge
+    visibility: public
+
+  - key: last_reviewed
+    label: "Evidence reviewed on"
+    shape: date
+    style: plain
+    visibility: public
+
+  - key: practical_question
+    label: "Practical question"
+    shape: text
+    style: boxed
+    visibility: public
+
+  - key: why_it_matters
+    label: "Why this matters"
+    shape: text
+    style: plain
+    visibility: public
+
+  - key: scope_and_assumptions
+    label: "Scope and assumptions"
+    shape: list
+    style: plain
+    visibility: public
+
+  - key: evidence_approach
+    label: "Evidence approach"
+    shape: text
+    style: boxed
+    visibility: public
+
+  - key: anchor_evidence
+    label: "Anchor evidence"
+    shape: table
+    style: table
+    visibility: public
+    columns: ["citation", "design_or_type", "population_or_context", "main_finding", "limitations", "relevance"]
+
+  - key: evidence_gaps
+    label: "Evidence gaps and limitations"
+    shape: list
+    style: plain
+    visibility: public
+
+  - key: interpretation
+    label: "Interpretation"
+    shape: text
+    style: plain
+    visibility: public
+
+  - key: practice_recommendations
+    label: "Practice recommendations"
+    shape: list
+    style: boxed
+    visibility: public
+
+  - key: implementation_notes
+    label: "Implementation notes"
+    shape: list
+    style: plain
+    visibility: public
+
+  - key: escalation_or_exception
+    label: "When to escalate or make an exception"
+    shape: list
+    style: plain
+    visibility: public
+    optional: true
+
+  - key: sample_wording
+    label: "Sample report or communication wording"
+    shape: text
+    style: boxed
+    visibility: public
+    optional: true
+
+  - key: unresolved_questions
+    label: "Unresolved questions"
+    shape: list
+    style: plain
+    visibility: public
+
+  - key: personal_perspective
+    label: "Personal perspective"
+    shape: text
+    style: opinion
+    visibility: public
+
+  - key: bottom_line
+    label: "Bottom line"
+    shape: text
+    style: boxed
+    visibility: public
+    teaser: true
+    max_chars: 400
+
+  - key: keywords
+    label: "Keywords"
+    shape: list
+    style: plain
+    visibility: public
+
+  - key: declarations
+    label: "Conflicts of interest and funding"
+    shape: list
+    style: plain
+    visibility: public
+
+  - key: author_note
+    label: "Author note"
+    shape: text
+    style: plain
+    visibility: public
+    optional: true
+
+  - key: editorial_note
+    label: "Editorial note"
+    shape: text
+    style: plain
+    visibility: editor
+    optional: true
