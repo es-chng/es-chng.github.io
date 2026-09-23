@@ -33,6 +33,13 @@ mock-one-field:
   deposition_id: 607274
   doi: 10.5072/zenodo.607274
   title: A mock article testing exactly one schema field
+phyllodes-tumors:
+  concept_doi: 10.5072/zenodo.607339
+  content_hash: 49d2a19db0ff28d78a000953427a9f0acda13e687713646c01dd5cb7a640f57c
+  deposited_at: '2026-09-23T06:19:23Z'
+  deposition_id: 607340
+  doi: 10.5072/zenodo.607340
+  title: 'Classifying Phyllodes Tumors: WHO vs Refined Diagnostic Criteria'
 scanner-validation:
   concept_doi: 10.5072/zenodo.607305
   content_hash: 7822b121dd2f93195f9fcfc80a17f67886b2043481d8041bbe20380d045d1353
