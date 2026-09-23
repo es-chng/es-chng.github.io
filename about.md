@@ -4,8 +4,6 @@ title: "About this microjournal"
 permalink: /about/
 ---
 
-# About this microjournal
-
 This is a single-author publication by **Ewe Seng Ch'ng, MD, MPath, FIAC, FAMM**. There is no editorial board and no peer review. Each piece represents the author's own reading of the literature, written, dated, and published under his own name.
 
 The purpose is deliberately modest: to examine specific practical questions in anatomical pathology, particularly where published evidence, guidelines, laboratory practice, and diagnostic interpretation do not always align neatly.
