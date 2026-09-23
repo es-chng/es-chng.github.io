@@ -1,14 +1,41 @@
-# Zenodo DOI ledger for individual articles.
-# Written automatically by scripts/zenodo_articles.py.
-# Do not edit by hand unless you know the deposition IDs.
-#
-# slug:
-#   doi: "10.5281/zenodo.1234567"
-#   concept_doi: "10.5281/zenodo.1234566"
-#   deposition_id: 1234567
-#   content_hash: "..."
-#   deposited_at: "2026-09-22T12:00:00Z"
-#   title: "..."
-#
-# Layouts prefer ledger DOIs over placeholder front-matter DOIs.
-{}
+her2-ultralow:
+  concept_doi: 10.5072/zenodo.607357
+  content_hash: 04a3c111e8b6048724abfa5064180746c36130c82c596d1ee6640a4b8df2f0b5
+  deposited_at: '2026-09-23T06:45:31Z'
+  deposition_id: 607358
+  doi: 10.5072/zenodo.607358
+  sandbox: true
+  title: 'HER2-ultralow: how do I recognise it, and how sure can I be?'
+intramucosal-adenocarcinoma:
+  concept_doi: 10.5072/zenodo.607359
+  content_hash: 817762284ebf5237c45301a680660fb244f01169077035606c828bafd54bf06d
+  deposited_at: '2026-09-23T06:45:34Z'
+  deposition_id: 607360
+  doi: 10.5072/zenodo.607360
+  sandbox: true
+  title: 'Intramucosal adenocarcinoma in the colon: does the label matter?'
+mmr-ihc:
+  concept_doi: 10.5072/zenodo.607361
+  content_hash: bbea860d1ef7e096942108410d73eea04e0c8510ff720056347d79b70efdb171
+  deposited_at: '2026-09-23T06:45:37Z'
+  deposition_id: 607362
+  doi: 10.5072/zenodo.607362
+  sandbox: true
+  title: 'Patchy MMR loss on IHC: how do I read it?'
+phyllodes-tumors:
+  concept_doi: 10.5072/zenodo.607363
+  content_hash: 49d2a19db0ff28d78a000953427a9f0acda13e687713646c01dd5cb7a640f57c
+  deposited_at: '2026-09-23T06:45:41Z'
+  deposition_id: 607364
+  doi: 10.5072/zenodo.607364
+  sandbox: true
+  title: 'Classifying Phyllodes Tumors: WHO vs Refined Diagnostic Criteria'
+scanner-validation:
+  concept_doi: 10.5072/zenodo.607365
+  content_hash: 7822b121dd2f93195f9fcfc80a17f67886b2043481d8041bbe20380d045d1353
+  deposited_at: '2026-09-23T06:45:44Z'
+  deposition_id: 607366
+  doi: 10.5072/zenodo.607366
+  sandbox: true
+  title: 'Switching scanners: what do I need to re-validate before I trust the new
+    images?'
