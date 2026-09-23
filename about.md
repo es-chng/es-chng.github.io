@@ -1,9 +1,8 @@
 ---
-
 layout: page
 title: "About this microjournal"
 permalink: /about/
-------------------
+---
 
 # About this microjournal
 
