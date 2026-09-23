@@ -9,3 +9,9 @@ schema-practice-update:
   - mmr-ihc.md
   - scanner-validation.md
   version: 1
+schema-practice-update-v2:
+  content_hash: 50c41c020d402c423f5746e5fa1b625866d5906b37fe2d5e92d67185b8eeedea
+  locked_at: '2026-09-23T06:18:01Z'
+  locked_by:
+  - phyllodes-tumors.md
+  version: 2
