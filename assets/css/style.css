@@ -78,16 +78,21 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .site-title:hover { color: var(--accent); }
 .site-nav {
+  display: flex;
+  gap: 1.25rem;
   font-size: 0.9rem;
-  color: var(--muted);
 }
 .site-nav a {
-  color: var(--muted);
+  color: var(--ink);
   text-decoration: none;
-  margin-left: 0.85rem;
+  border-bottom: 1px solid var(--rule-strong);
+  padding-bottom: 0.12rem;
 }
-.site-nav a:first-child { margin-left: 0; }
-.site-nav a:hover { color: var(--accent); text-decoration: underline; }
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
 
 .site-footer {
   max-width: var(--measure);
