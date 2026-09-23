@@ -108,12 +108,13 @@ check regardless of what its DOI or ledger entry might otherwise suggest.
 > a `draft` article that is pushed is fully live and listed, exactly like a
 > published one. There is currently no mechanism to keep a draft private.
 
-To create or refresh locks after marking articles published (or after
-reverting one to draft):
+Locks are created automatically. When an article marked `status: published`
+arrives on GitHub, the build locks the schema it uses and commits the updated
+`_data/schema-locks.yml` back to the repository itself. Nothing needs to be run
+by hand. (Running `python scripts/validate_schema.py` locally does the same.)
 
-```
-python scripts/validate_schema.py --update-locks
-```
+Removing a lock stays deliberate: after reverting every article on a schema to
+draft, run `python scripts/validate_schema.py --update-locks`.
 
 ## Two DOI tracks
 
@@ -135,14 +136,23 @@ shown on the webpage. The pipeline, in order:
 No file is ever written back into an article's `.md` — this avoids a
 workflow re-triggering itself. Ledger commits use `[skip ci]`.
 
-**One-time setup:**
+**Setup and testing:**
 
-1. Create a Zenodo personal access token (`deposit:write` + `deposit:actions`
-   scopes). Start on [sandbox.zenodo.org](https://sandbox.zenodo.org).
-2. Add it as the repository secret `ZENODO_TOKEN`.
-3. Optional: repository variable `SITE_URL` (links each Zenodo record back to
-   the live article page); variable `ZENODO_LIVE=1` only when you want
-   production `zenodo.org` instead of the sandbox.
+1. On [sandbox.zenodo.org](https://sandbox.zenodo.org) (Zenodo's test server,
+   separate account), create a personal access token with `deposit:write` and
+   `deposit:actions`. Add it as the repository secret `ZENODO_SANDBOX_TOKEN`.
+2. Actions -> "Deposit article PDFs to Zenodo" -> Run workflow -> mode
+   `sandbox-test`. Published articles get test DOIs (10.5072/...), the site
+   rebuilds, and each article page and PDF shows the test DOI labelled
+   "not permanent". Nothing permanent is created.
+3. When satisfied, create a token on [zenodo.org](https://zenodo.org) with the
+   same scopes, add it as the secret `ZENODO_TOKEN`, and run mode `live`. Real
+   DOIs (10.5281/...) replace the test DOIs; the site rebuilds by itself.
+4. Mode `clear-test-dois` removes test DOIs from the site without going live.
+5. Optional: repository variable `SITE_URL` links each Zenodo record back to
+   the live article page.
+
+The workflow never runs by itself; every deposit is started by hand.
 
 Local dry-run (embeds a fake DOI in the PDF so you can inspect the footer):
 

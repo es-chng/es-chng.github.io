@@ -1,16 +1,30 @@
 name: Deposit article PDFs to Zenodo
 
+# Run by hand: Actions -> "Deposit article PDFs to Zenodo" -> Run workflow.
+#
+#   sandbox-test     Deposits to sandbox.zenodo.org (test server). Test DOIs
+#                    (10.5072/...) go into the ledger and appear on the site,
+#                    labelled "test DOI ... not permanent". Uses the secret
+#                    ZENODO_SANDBOX_TOKEN.
+#   live             Deposits to zenodo.org. Real, permanent DOIs replace any
+#                    test DOIs. Uses the secret ZENODO_TOKEN.
+#   clear-test-dois  Removes every test DOI from the ledger. Real DOIs untouched.
+#
+# Only articles with status: published are ever deposited. After the ledger
+# changes, the site is rebuilt automatically so page and PDF show the DOI.
+
 on:
-  workflow_run:
-    workflows: ["Validate, build and publish"]
-    types: [completed]
   workflow_dispatch:
     inputs:
-      live:
-        description: "Deposit to production zenodo.org (default is sandbox)"
-        required: false
-        type: boolean
-        default: false
+      mode:
+        description: "What to do"
+        required: true
+        type: choice
+        default: sandbox-test
+        options:
+          - sandbox-test
+          - live
+          - clear-test-dois
       force:
         description: "Re-deposit even when content is unchanged"
         required: false
@@ -19,7 +33,7 @@ on:
 
 permissions:
   contents: write
-  actions: write   # to start a site rebuild once new DOIs are recorded
+  actions: write   # to start a site rebuild once the ledger changes
 
 concurrency:
   group: zenodo-articles
@@ -27,35 +41,31 @@ concurrency:
 
 jobs:
   deposit:
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' &&
-       github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - uses: ./.github/actions/setup-toolchain
 
-      - name: Restore the PDF cache
-        uses: actions/cache@v4
-        with:
-          path: .pdf-cache
-          key: pdf-cache-zenodo-${{ github.run_id }}
-          restore-keys: |
-            pdf-cache-
+      - name: Remove test DOIs from the ledger
+        if: inputs.mode == 'clear-test-dois'
+        run: python scripts/zenodo_articles.py .pdf-out --clear-sandbox
 
-      - name: Deposit to Zenodo (reserve DOI → embed in PDF → upload → publish)
+      - name: Deposit to Zenodo (reserve DOI -> embed in PDF -> upload -> publish)
+        if: inputs.mode != 'clear-test-dois'
         env:
-          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
-          ZENODO_LIVE: ${{ (github.event_name == 'workflow_dispatch' && inputs.live) && '1' || '' }}
+          ZENODO_TOKEN: ${{ inputs.mode == 'live' && secrets.ZENODO_TOKEN || secrets.ZENODO_SANDBOX_TOKEN }}
+          ZENODO_LIVE: ${{ inputs.mode == 'live' && '1' || '' }}
           SITE_URL: ${{ vars.SITE_URL || 'https://es-chng.github.io' }}
         run: |
           if [ -z "$ZENODO_TOKEN" ]; then
-            echo "ZENODO_TOKEN is not set — cannot deposit."
+            if [ "${{ inputs.mode }}" = "live" ]; then
+              echo "::error::Secret ZENODO_TOKEN (a token from zenodo.org) is not set."
+            else
+              echo "::error::Secret ZENODO_SANDBOX_TOKEN (a token from sandbox.zenodo.org) is not set."
+            fi
             exit 1
           fi
           mkdir -p .pdf-out
@@ -64,29 +74,23 @@ jobs:
             EXTRA="--force"
           fi
           python scripts/zenodo_articles.py .pdf-out $EXTRA
-          mkdir -p .pdf-cache
-          cp -f .pdf-out/*.pdf .pdf-cache/ 2>/dev/null || true
+          # PDFs made here go to Zenodo only. The website PDFs are rebuilt by
+          # pages.yml from the ledger, so page and PDF always match.
 
-      - name: Commit ledger if it changed
+      - name: Commit ledger and rebuild the site if it changed
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          if [ ! -f _data/zenodo-ledger.yml ]; then
-            echo "No ledger file."
-            exit 0
-          fi
           if git diff --quiet -- _data/zenodo-ledger.yml 2>/dev/null; then
-            echo "Ledger unchanged."
+            echo "Ledger unchanged -- nothing to commit, no rebuild needed."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add _data/zenodo-ledger.yml
-          git commit -m "chore: update Zenodo DOI ledger [skip ci]" || exit 0
-          BRANCH="${{ github.event.workflow_run.head_branch || github.ref_name }}"
-          # The build may have committed a schema lock since this run started.
-          git pull --rebase origin "${BRANCH}"
-          git push origin "HEAD:${BRANCH}"
-          # The ledger commit is [skip ci], so start the site build explicitly:
-          # it puts the new DOI on the article page and into the site PDF.
-          gh workflow run pages.yml --ref "${BRANCH}"
-        env:
-          GH_TOKEN: ${{ github.token }}
+          git commit -m "chore: update Zenodo DOI ledger (${{ inputs.mode }}) [skip ci]"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          # The commit is [skip ci], so start the site build explicitly.
+          gh workflow run pages.yml --ref "${GITHUB_REF_NAME}"
+          echo "Site rebuild started: see Actions -> Validate, build and publish."

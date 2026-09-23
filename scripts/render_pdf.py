@@ -123,10 +123,9 @@ def compute_col_widths(cols, available=TABLE_AVAILABLE_WIDTH, narrow=NARROW_COLU
 
 
 def is_placeholder_doi(doi) -> bool:
-    """True for empty/placeholder DOIs (XXXXXXX, 000…, pending) and for
-    sandbox.zenodo.org test DOIs (prefix 10.5072), which never resolve."""
+    """True for empty/placeholder DOIs (XXXXXXX, 000…, pending)."""
     d = str(doi or "").strip().lower()
-    if d in ("", "none", "null") or d.startswith("10.5072/"):
+    if d in ("", "none", "null"):
         return True
     return any(d.startswith(x) for x in ("10.5281/zenodo.000", "10.5281/zenodo.xxx", "doi:pending", "pending"))
 
@@ -278,7 +277,14 @@ def build(article_path, out_path, doi_override=None):
     # ---- fixed footer, identical structure to the webpage's base frame ----
     story.append(Spacer(1, 10))
     story.append(HRFlowable(width="100%", thickness=0.6, color=RULE, spaceBefore=8, spaceAfter=8))
-    if display_doi:
+    if display_doi and str(display_doi).startswith("10.5072/"):
+        # sandbox.zenodo.org test DOI: shown so the pipeline can be tested,
+        # clearly labelled because it is not permanent and does not resolve.
+        story.append(Paragraph(
+            f"Pages {article['pages']} &middot; {escape(str(display_doi))} "
+            f"(test DOI from sandbox.zenodo.org, not permanent)",
+            st["footer"]))
+    elif display_doi:
         story.append(Paragraph(
             f"Pages {article['pages']} &middot; https://doi.org/{escape(str(display_doi))}",
             st["footer"]))

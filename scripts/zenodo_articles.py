@@ -59,9 +59,12 @@ def is_placeholder_doi(doi) -> bool:
     if not doi:
         return True
     d = str(doi).strip().lower()
-    if d.startswith("10.5072/"):  # sandbox.zenodo.org test DOI -- never real
-        return True
     return any(d.startswith(p) for p in PLACEHOLDER_DOI_PREFIXES) or d in ("", "none", "null")
+
+
+def is_sandbox_doi(doi) -> bool:
+    """sandbox.zenodo.org test DOI (prefix 10.5072) -- not permanent."""
+    return str(doi or "").strip().lower().startswith("10.5072/")
 
 
 def load_front_matter(path: pathlib.Path) -> dict:
@@ -263,7 +266,20 @@ def main() -> int:
     )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--force", action="store_true", help="Re-deposit even if content unchanged")
+    parser.add_argument("--clear-sandbox", action="store_true",
+                        help="Remove every sandbox test DOI from the ledger, then exit")
     args = parser.parse_args()
+
+    if args.clear_sandbox:
+        ledger = load_ledger()
+        test = [slug for slug, e in ledger.items() if is_sandbox_doi((e or {}).get("doi"))]
+        for slug in test:
+            del ledger[slug]
+            print(f"CLEAR {slug}: removed sandbox test DOI")
+        if test:
+            save_ledger(ledger)
+        print(f"\nRemoved {len(test)} sandbox test DOI(s); real DOIs untouched.")
+        return 0
 
     out_dir: pathlib.Path = args.pdf_dir
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -291,11 +307,19 @@ def main() -> int:
         existing_doi = entry.get("doi")
 
         # Path A: unchanged + real DOI in ledger → re-render PDF with that DOI
+        # A sandbox DOI never counts as done for a live run (and a real DOI is
+        # never replaced by a sandbox test).
+        same_kind = bool(existing_doi) and (is_sandbox_doi(existing_doi) == (not live))
+        if not live and existing_doi and not is_placeholder_doi(existing_doi) and not is_sandbox_doi(existing_doi):
+            print(f"KEEP  {slug}: already has real DOI {existing_doi} -- sandbox test skipped")
+            reused.append(slug)
+            continue
         if (
             not args.force
             and entry.get("content_hash") == h
             and existing_doi
             and not is_placeholder_doi(existing_doi)
+            and same_kind
         ):
             try:
                 render_pdf_build(str(article_path), str(pdf_path), doi_override=existing_doi)
@@ -336,6 +360,7 @@ def main() -> int:
                 "content_hash": h,
                 "deposited_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                 "title": metadata["title"],
+                "sandbox": not live,
             }
             print(f"DONE  {slug}: {final_doi} (PDF embeds this DOI)")
             deposited.append(slug)
@@ -344,8 +369,10 @@ def main() -> int:
             failed.append((slug, str(exc)))
 
     if not live and deposited:
-        print("\nSandbox run: test DOIs are NOT written to the ledger or shown on the site.")
-    if not args.dry_run and live and deposited:
+        print("\nSandbox run: test DOIs (10.5072/…) are written to the ledger and shown on the site,")
+        print("labelled as test DOIs. A later live run replaces them with real DOIs;")
+        print("the 'clear-test-dois' mode removes them.")
+    if not args.dry_run and deposited:
         save_ledger(ledger)
         print(f"\nLedger written to {LEDGER_PATH.relative_to(ROOT)}")
 
