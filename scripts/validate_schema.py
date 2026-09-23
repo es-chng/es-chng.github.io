@@ -25,7 +25,7 @@ Usage:
 
 Locks are created automatically: the first time an article using a schema is
 marked published, a normal run records that schema's lock in
-_data/schema-locks.yml (commit that file with the article). Only two things
+_data/schema-locks.yml. On GitHub the build commits that file back itself. Only two things
 stay manual on purpose: a changed locked schema is always an error, and a lock
 is only removed with --update-locks.
 """
@@ -33,7 +33,6 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import os
 import pathlib
 import re
 import sys
@@ -45,8 +44,6 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 FM_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n?", re.S)
 LOCKS_PATH = ROOT / "_data" / "schema-locks.yml"
 LEDGER_PATH = ROOT / "_data" / "zenodo-ledger.yml"
-# GitHub Actions sets GITHUB_ACTIONS=true; CI cannot commit lock changes back.
-IN_CI = os.environ.get("GITHUB_ACTIONS") == "true" or os.environ.get("CI") == "true"
 
 PLACEHOLDER_DOI_PREFIXES = (
     "10.5281/zenodo.000",
@@ -244,24 +241,14 @@ def check_schema_locks(
         if lock is None:
             # First published article on this schema -> lock it automatically.
             # Creating a lock is always safe: it only records the schema as it is
-            # now. The one exception is CI, which cannot commit the new lock back
-            # to the repository, so there it stays an error with instructions.
-            if IN_CI:
-                errors.append(
-                    f"schema '{schema_name}' is used by published article(s) "
-                    f"({', '.join(article_names)}) but its lock was not committed. "
-                    f"Run python scripts/validate_schema.py on your computer, then commit "
-                    f"_data/schema-locks.yml together with the article."
-                )
-            else:
-                new_locks[schema_name] = {
-                    "version": schema.get("version"),
-                    "content_hash": current_hash,
-                    "locked_at": now,
-                    "locked_by": sorted(article_names),
-                }
-                print(f"LOCK   {schema_name}: locked automatically (hash={current_hash[:12]}…) "
-                      f"— commit _data/schema-locks.yml with the article")
+            # now. On GitHub, pages.yml commits the updated lock file back.
+            new_locks[schema_name] = {
+                "version": schema.get("version"),
+                "content_hash": current_hash,
+                "locked_at": now,
+                "locked_by": sorted(article_names),
+            }
+            print(f"LOCK   {schema_name}: locked automatically (hash={current_hash[:12]}…)")
             continue
 
         locked_hash = lock.get("content_hash")
@@ -322,7 +309,7 @@ def main() -> int:
         print(f"LOCK ERROR  {e}")
         total_errors += 1
 
-    if (args.update_locks or new_locks != locks) and not IN_CI:
+    if args.update_locks or new_locks != locks:
         LOCKS_PATH.parent.mkdir(parents=True, exist_ok=True)
         # Preserve header comment style
         body = yaml.dump(new_locks, default_flow_style=False, sort_keys=True, allow_unicode=True)
