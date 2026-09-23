@@ -7,6 +7,7 @@ layout: null
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ site.title }}</title>
+  <meta name="description" content="{{ site.description | strip }}">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
 <body>
@@ -21,16 +22,12 @@ layout: null
 
 <main class="home">
   <header class="home-masthead">
-    <p class="home-kicker">A microjournal in anatomical pathology</p>
+    <p class="home-kicker">{{ site.tagline }}</p>
     <h1>{{ site.title }}</h1>
     <p class="home-dek">
       Practical, evidence-aware discussions of focused diagnostic and reporting questions—
       particularly where published evidence meets everyday professional judgement.
     </p>
-    <nav class="home-nav" aria-label="Publication navigation">
-      <a href="{{ '/about/' | relative_url }}">About</a>
-      <a href="{{ '/issues/' | relative_url }}">Issues</a>
-    </nav>
   </header>
 
   <section class="home-principle" aria-labelledby="principle-heading">

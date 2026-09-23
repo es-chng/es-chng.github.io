@@ -1,10 +1,8 @@
 ---
 title: "Intramucosal adenocarcinoma in the colon: does the label matter?"
 authors:
-  - given: Example
-    family: Author
-    affiliation: Example University Hospital
-    orcid: "0000-0002-1825-0097"
+  - given: Ewe Seng
+    family: "Ch'ng"
 corresponding_email: author@example.org
 volume: 1
 issue: 1

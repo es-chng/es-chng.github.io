@@ -5,7 +5,8 @@ layout: null
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Volume {{ page.volume }}, Issue {{ page.issue }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Volume {{ page.volume }}, Issue {{ page.issue }} · {{ site.title }}</title>
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
 <body>
@@ -16,6 +17,17 @@ layout: null
   <p class="base-date">Published {{ page.published_date | date: "%-d %B %Y" }}</p>
 
   {%- comment -%}
+    Issue introduction: whatever is written below the front matter in the
+    issue's .md file. Left out entirely if the file has no body.
+  {%- endcomment -%}
+  {%- assign issue_intro = content | strip -%}
+  {%- if issue_intro != "" %}
+  <section class="issue-intro" aria-label="About this issue">
+    {{ content }}
+  </section>
+  {%- endif %}
+
+  {%- comment -%}
     STEP 7: the one deliberate seam between the base layer and schema layer.
     For each article in this issue: show base fields (title, authors, pages),
     plus exactly the ONE field the article's schema nominated as its teaser.
@@ -23,7 +35,8 @@ layout: null
   {%- endcomment -%}
 
   <ol class="issue-toc">
-    {%- assign articles_in_issue = site.articles | where: "volume", page.volume | where: "issue", page.issue | sort: "order" -%}
+    {%- comment -%} Only articles marked status: published are collected into the issue. {%- endcomment -%}
+    {%- assign articles_in_issue = site.articles | where: "volume", page.volume | where: "issue", page.issue | where: "status", "published" | sort: "order" -%}
     {%- for article in articles_in_issue -%}
       {%- assign schema = site.data[article.schema] -%}
       {%- assign teaser_field = nil -%}

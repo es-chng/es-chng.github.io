@@ -8,10 +8,11 @@ permalink: /issues/
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Issues</title>
+  <title>Issues · {{ site.title }}</title>
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
 <body>
+{% include site-header.html %}
 <main class="prose-page">
   <h1>Issues</h1>
   {%- assign all_issues = site.issues | sort: "published_date" | reverse -%}

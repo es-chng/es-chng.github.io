@@ -1,5 +1,8 @@
-title: Schema Lab
-description: A standalone test bed for the schema-driven publication module. Not a real journal.
+title: Anatomic Pathology in Focus
+tagline: A microjournal in anatomical pathology
+description: >-
+  Practical, evidence-aware discussions of focused diagnostic and reporting questions,
+  particularly where published evidence meets everyday professional judgement.
 url: "https://es-chng.github.io"
 baseurl: ""   # this repo is the root user-pages site, so no subpath
 collections:

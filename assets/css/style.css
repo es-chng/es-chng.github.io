@@ -293,6 +293,21 @@ main,
   font-size: 0.92rem;
 }
 
+/* ---- issue introduction (body of the issue .md) ---- */
+.issue-intro {
+  max-width: var(--measure);
+  margin: 0 0 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+  line-height: var(--leading);
+}
+.issue-intro p { margin: 0 0 0.9rem; }
+.issue-intro p:last-child { margin-bottom: 0; }
+.issue-intro h2 {
+  font-size: 1.05rem;
+  margin: 1.4rem 0 0.5rem;
+}
+
 /* ---- listings (home / issue) ---- */
 .issue-toc {
   list-style: none;
@@ -445,23 +460,6 @@ main,
   line-height: 1.55;
   color: var(--muted);
 }
-.home-nav {
-  display: flex;
-  gap: 1.25rem;
-  margin-top: 1.35rem;
-  font-size: 0.9rem;
-}
-.home-nav a {
-  color: var(--ink);
-  text-decoration: none;
-  border-bottom: 1px solid var(--rule-strong);
-  padding-bottom: 0.12rem;
-}
-.home-nav a:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-
 .home-principle {
   max-width: 43rem;
   padding: 2rem 0 2.25rem;

@@ -126,7 +126,7 @@ def build_metadata(fm: dict, slug: str) -> dict:
         creators.append(entry)
 
     if not creators:
-        name = os.environ.get("ZENODO_CREATOR_NAME", "Author, Example")
+        name = os.environ.get("ZENODO_CREATOR_NAME", "Ch'ng, Ewe Seng")
         entry = {"name": name}
         orcid = os.environ.get("ZENODO_CREATOR_ORCID")
         if orcid:

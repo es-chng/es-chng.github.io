@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "About this newsletter"
+title: "About"
 permalink: /about/
 ---
 This is a single-author publication. There is no editorial board and no peer review: every
