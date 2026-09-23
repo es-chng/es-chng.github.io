@@ -23,6 +23,7 @@ broken fixtures are copied into a temporary directory before building.
 """
 import shutil
 import subprocess
+import yaml
 import sys
 import tempfile
 import pathlib
@@ -186,6 +187,105 @@ def main():
     check(r5.returncode == 0 and "toy-example-article.md" not in manifest and not (cache_dir / "toy-example-article.pdf").exists()
           and not (out5 / "toy-example-article.pdf").exists(),
           "deleting an article removes its cached PDF and its manifest entry")
+
+    # ---- Publish-lock and Zenodo-ledger coverage (previously untested) ----
+    # These three checks reproduce, as permanent regressions, three things
+    # found only by manual examination in earlier rounds: a status:draft
+    # escape hatch that must actually work, a lock that must be removable
+    # once nothing published needs it any longer, and a ledger DOI that must
+    # actually reach the rendered page (a hyphenated Liquid lookup silently
+    # failed here for three examinations before being caught by hand).
+
+    lock_scratch = pathlib.Path(tempfile.mkdtemp()) / "lockscratch"
+    shutil.copytree(ROOT, lock_scratch, ignore=shutil.ignore_patterns("_site", ".jekyll-cache", "__pycache__"))
+
+    # 11. status: draft must exempt an article from schema_version/lock requirements,
+    #     even if it has what looks like a real DOI -- draft is an explicit override,
+    #     not just "no signals of publication".
+    draft_path = lock_scratch / "_articles" / "toy-example-article.md"
+    original = draft_path.read_text()
+    with_real_doi = original.replace('doi: "10.5281/zenodo.0000009"', 'doi: "10.5281/zenodo.5551234"')
+    draft_path.write_text(with_real_doi)
+    r11 = run([sys.executable, "scripts/validate_schema.py"], lock_scratch)
+    check(r11.returncode == 0,
+          "status: draft exempts an article from publish-lock checks even with a real-looking DOI")
+    draft_path.write_text(original)
+
+    # 12. A schema's lock must be removable once no published article uses it any
+    #     longer -- update-locks must be able to UNLOCK, not just lock and refresh.
+    mark_published = original.replace("status: draft", "status: published")
+    draft_path.write_text(mark_published)
+    r12a = run([sys.executable, "scripts/validate_schema.py", "--update-locks"], lock_scratch)
+    locks_after_lock = yaml.safe_load((lock_scratch / "_data/schema-locks.yml").read_text()) or {}
+    check(r12a.returncode == 0 and "schema-toy-example" in locks_after_lock,
+          "marking an article published locks the schema it uses")
+
+    draft_path.write_text(original)  # back to draft
+    r12b = run([sys.executable, "scripts/validate_schema.py", "--update-locks"], lock_scratch)
+    locks_after_unlock = yaml.safe_load((lock_scratch / "_data/schema-locks.yml").read_text()) or {}
+    check(r12b.returncode == 0 and "schema-toy-example" not in locks_after_unlock,
+          "reverting that article to draft and re-running --update-locks removes the lock")
+
+    edited = (lock_scratch / "_data/schema-toy-example.yml").read_text() + "\n# edited after unlock\n"
+    (lock_scratch / "_data/schema-toy-example.yml").write_text(edited)
+    r12c = run([sys.executable, "scripts/validate_schema.py"], lock_scratch)
+    check(r12c.returncode == 0, "an unlocked schema can genuinely be edited without validation failing")
+
+    # 13. The webpage must actually prefer a real Zenodo-ledger DOI over the
+    #     placeholder in front matter -- this is the fix for the bug that
+    #     survived three prior examinations undetected.
+    ledger_scratch = pathlib.Path(tempfile.mkdtemp()) / "ledgerscratch"
+    shutil.copytree(ROOT, ledger_scratch, ignore=shutil.ignore_patterns("_site", ".jekyll-cache", "__pycache__"))
+    (ledger_scratch / "_data" / "zenodo-ledger.yml").write_text(
+        yaml.dump({"her2-ultralow": {"doi": "10.5281/zenodo.8887777"}})
+    )
+    ledger_out = pathlib.Path(tempfile.mkdtemp())
+    r13 = run(["jekyll", "build", "--source", str(ledger_scratch), "--destination", str(ledger_out), "--baseurl", ""],
+              ledger_scratch)
+    her2_html = ledger_out / "articles/her2-ultralow/index.html"
+    html = her2_html.read_text() if her2_html.exists() else ""
+    check(r13.returncode == 0 and "10.5281/zenodo.8887777" in html and "10.5281/zenodo.0000003" not in html,
+          "a real Zenodo-ledger DOI is shown on the article page instead of the front-matter placeholder")
+
+    # 14. render_pdf.build()'s doi_override must actually reach the PDF's own text,
+    #     not just be accepted as a parameter -- this is what lets a deposited PDF
+    #     cite the same DOI Zenodo just minted for it, rather than an earlier one.
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import importlib
+    render_pdf = importlib.import_module("render_pdf")
+    override_pdf = pathlib.Path(tempfile.mkdtemp()) / "override.pdf"
+    render_pdf.build(str(ROOT / "_articles/her2-ultralow.md"), str(override_pdf), doi_override="10.5281/zenodo.4443210")
+    text = subprocess.run(["pdftotext", str(override_pdf), "-"], capture_output=True, text=True).stdout
+    check("10.5281/zenodo.4443210" in text and "10.5281/zenodo.0000003" not in text,
+          "doi_override is actually embedded in the rendered PDF's own text, not just accepted as an argument")
+
+    # 15. The "date" shape was documented in the schema's own comment block from
+    #     the start but never implemented anywhere -- found only by deliberately
+    #     dissecting a heavier use case against the vocabulary. schema-toy-example's
+    #     own reviewed_on field is now a real, permanent, date-shaped field -- not a
+    #     disposable scratch fixture -- so these checks run against the real files.
+    r15a = run([sys.executable, "scripts/validate_schema.py"], ROOT)
+    check(r15a.returncode == 0, "the real toy schema's date field validates as shipped")
+
+    out15 = pathlib.Path(tempfile.mkdtemp())
+    r15b = run(["jekyll", "build", "--source", str(ROOT), "--destination", str(out15), "--baseurl", ""], ROOT)
+    toy_html = (out15 / "articles/toy-example-article/index.html")
+    html15 = toy_html.read_text() if toy_html.exists() else ""
+    check(r15b.returncode == 0 and "5 October 2026" in html15 and "2026-10-05" not in html15,
+          "a date field renders formatted on the webpage, not as a raw ISO string")
+
+    date_pdf = pathlib.Path(tempfile.mkdtemp()) / "date.pdf"
+    render_pdf.build(str(ROOT / "_articles/toy-example-article.md"), str(date_pdf))
+    pdf_text = subprocess.run(["pdftotext", str(date_pdf), "-"], capture_output=True, text=True).stdout
+    check("5 October 2026" in pdf_text, "a date field renders formatted in the PDF too")
+
+    date_scratch = pathlib.Path(tempfile.mkdtemp()) / "datescratch"
+    shutil.copytree(ROOT, date_scratch, ignore=shutil.ignore_patterns("_site", ".jekyll-cache", "__pycache__"))
+    bad_article = date_scratch / "_articles/toy-example-article.md"
+    bad_article.write_text(bad_article.read_text().replace("reviewed_on: 2026-10-05", 'reviewed_on: "not a date"'))
+    r15c = run([sys.executable, "scripts/validate_schema.py"], date_scratch)
+    check(r15c.returncode == 1 and "declared shape 'date'" in r15c.stdout,
+          "a malformed date value is genuinely rejected, not silently accepted")
 
     print(f"\n{PASSED} passed, {FAILED} failed.")
     return 1 if FAILED else 0

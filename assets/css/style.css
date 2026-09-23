@@ -1,156 +1,408 @@
-/* Academic register: one serif type family throughout, a near-monochrome
-   palette, small-caps labels rather than coloured badges, thin rules rather
-   than coloured boxes. Colour is used exactly once, for links.
-   Deliberately no external font load (no @import, no CDN) -- a system serif
-   stack keeps this self-contained, with no network dependency and no risk
-   of a flash of unstyled text if a remote font fails to load. */
+/* Professional academic register — web + PDF should feel like one system.
+   Serif throughout, near-monochrome, small-caps labels, thin rules.
+   One accent colour for links only. No external font CDN. */
 
 :root {
   --ink: #1a1a1a;
-  --muted: #55534f;
-  --rule: #c9c5bc;
+  --muted: #5c5a56;
+  --rule: #d4d0c8;
   --rule-strong: #8a877d;
-  --paper: #fdfcfa;
-  --accent: #5c3d2e;      /* the one colour: a dark, muted sepia-brown, used only for links */
+  --paper: #faf9f7;
+  --accent: #5c3d2e;
+  --error: #7a2e2e;
+  --measure: 40rem;          /* ~65–70 characters */
+  --font: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", "Times New Roman", serif;
+  --leading: 1.65;
+}
+
+/* Same academic register, dark: warm near-black paper, warm off-white ink,
+   one lightened accent, kept to the same monochrome-plus-one-colour philosophy
+   as the light mode rather than inventing a different palette for dark mode. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e8e4da;
+    --muted: #a39d8f;
+    --rule: #3a362e;
+    --rule-strong: #5c5748;
+    --paper: #17150f;
+    --accent: #cf9f6f;
+    --error: #d98a82;
+  }
 }
 
 * { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
 body {
   margin: 0;
-  background: #ffffff;
+  background: var(--paper);
   color: var(--ink);
-  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
-  font-size: 1.0625rem;
-  line-height: 1.6;
+  font-family: var(--font);
+  font-size: 1.0625rem;       /* 17px */
+  line-height: var(--leading);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
-main, .base-frame { max-width: 42rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
-a { color: var(--accent); }
 
-.placeholder { border: none; color: var(--muted); font-style: italic; }
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+a:hover { text-decoration-thickness: 2px; }
 
-/* ---- masthead / base frame (schema-blind, the same for every schema) ---- */
-.base-frame { border: none; padding-top: 2.5rem; }
-.base-badge {
-  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
-  font-variant: small-caps;
-  letter-spacing: 0.04em;
-  font-size: 0.95rem;
-  color: var(--muted);
-  margin: 0 0 1.25rem;
-  padding-bottom: 0.6rem;
+/* ---- site chrome ---- */
+.site-header {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 0;
+  border-bottom: none;
+}
+.site-header-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding-bottom: 0.85rem;
   border-bottom: 1px solid var(--rule);
 }
-.base-header h1 {
-  font-size: 1.7rem;
-  font-weight: 600;
-  line-height: 1.3;
-  margin: 0 0 0.9rem;
-}
-.base-authors { font-size: 1rem; font-style: italic; color: var(--ink); margin: 0 0 0.15rem; }
-.base-date { font-size: 0.9rem; color: var(--muted); margin: 0 0 1.75rem; }
-
-.schema-slot { border-top: none; border-bottom: none; padding: 0; margin: 0; }
-
-.base-footer {
-  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
-  font-size: 0.9rem;
-  color: var(--muted);
-  margin-top: 2.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--rule);
-}
-.base-footer a { color: var(--accent); }
-.base-footer a.pdf-link {
-  display: inline-block;
-  background: none;
-  color: var(--accent);
-  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
-  font-style: italic;
+.site-title {
   font-size: 0.95rem;
-  font-weight: 400;
-  padding: 0;
-  border: none;
-  border-radius: 0;
+  font-weight: 600;
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  color: var(--ink);
   text-decoration: none;
 }
-.base-footer a.pdf-link::before { content: "↓ "; }
+.site-title:hover { color: var(--accent); }
+.site-nav {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.site-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  margin-left: 0.85rem;
+}
+.site-nav a:first-child { margin-left: 0; }
+.site-nav a:hover { color: var(--accent); text-decoration: underline; }
+
+.site-footer {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  border-top: 1px solid var(--rule);
+}
+.site-footer a { color: var(--muted); }
+
+/* ---- page measure ---- */
+main,
+.base-frame,
+.prose-page {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.placeholder {
+  border: none;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* ---- article base frame ---- */
+.base-frame { padding-top: 1.75rem; }
+
+.base-badge {
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0 0 1.1rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--rule);
+  text-transform: none;
+}
+
+.base-header h1 {
+  font-size: 1.65rem;
+  font-weight: 600;
+  line-height: 1.28;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.base-authors {
+  font-size: 1.02rem;
+  font-style: italic;
+  color: var(--ink);
+  margin: 0 0 0.2rem;
+  line-height: 1.4;
+}
+
+.base-date {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin: 0 0 1.75rem;
+  letter-spacing: 0.01em;
+}
+
+.schema-slot { margin: 0; padding: 0; }
+
+/* ---- footer meta ---- */
+.base-footer {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-top: 2.75rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--rule);
+  line-height: 1.55;
+}
+.base-footer p { margin: 0.35rem 0; }
+.base-footer a { color: var(--accent); }
+.base-footer a.pdf-link {
+  display: inline;
+  font-style: italic;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+}
 .base-footer a.pdf-link:hover { text-decoration: underline; }
 
-/* ---- schema-driven fields: styled generically by their declared "style", ---- */
-/* ---- never by which specific field they happen to be.                   ---- */
-.field { margin: 1.5rem 0; }
+/* ---- schema fields (generic by style) ---- */
+.field {
+  margin: 1.65rem 0;
+  padding: 0;
+}
 .field-label {
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 600;
   font-variant: small-caps;
-  letter-spacing: 0.03em;
-  margin: 0 0 0.5rem;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.45rem;
   color: var(--ink);
+  line-height: 1.3;
 }
-.field-text { margin: 0; line-height: 1.65; }
-.field-list { margin: 0; padding-left: 1.3rem; }
-.field-list li { margin: 0.3rem 0; line-height: 1.6; }
-
-.field-table { width: 100%; border-collapse: collapse; font-size: 0.98rem; }
-.field-table th, .field-table td {
-  text-align: left; padding: 0.55rem 0.75rem 0.55rem 0;
-  border-bottom: 1px solid var(--rule); vertical-align: top;
+.field-text {
+  margin: 0;
+  line-height: var(--leading);
+  text-align: left;
+  hyphens: auto;
 }
-.field-table th { font-weight: 600; font-variant: small-caps; letter-spacing: 0.02em; border-bottom: 1px solid var(--rule-strong); }
+.field-list {
+  margin: 0.15rem 0 0;
+  padding-left: 1.25rem;
+}
+.field-list li {
+  margin: 0.35rem 0;
+  line-height: var(--leading);
+  padding-left: 0.15rem;
+}
 
-/* "badge" style: a small-caps italic label, not a coloured pill. */
+/* Tables: left-aligned, calm rules, readable measure */
+.field-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  margin: 0.35rem 0 0;
+  line-height: 1.45;
+}
+.field-table th,
+.field-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.5rem 0.85rem 0.5rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.field-table th {
+  font-weight: 600;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  font-size: 0.88rem;
+  color: var(--muted);
+  border-bottom: 1px solid var(--rule-strong);
+  padding-bottom: 0.45rem;
+}
+.field-table td:last-child,
+.field-table th:last-child {
+  padding-right: 0;
+}
+
+/* badge: quiet inline meta, not a pill */
+.field-style-badge {
+  margin: 1.25rem 0;
+}
+.field-style-badge .field-label {
+  display: inline;
+  margin-right: 0.5rem;
+  color: var(--muted);
+  font-weight: 600;
+}
 .field-style-badge .field-text {
   display: inline;
-  background: none;
   color: var(--muted);
   font-size: 0.95rem;
   font-style: italic;
   font-variant: small-caps;
-  padding: 0;
-  border-radius: 0;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
 }
 
-/* "boxed" style: a thin rule above and below, not a filled box. */
-.field-style-boxed { border: none; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 0.9rem 0; background: none; }
+/* boxed: rules above/below, extra breathing room */
+.field-style-boxed {
+  border: none;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding: 1rem 0;
+  margin: 1.85rem 0;
+  background: none;
+}
 
-/* "opinion" style: set as a traditional block quotation -- indented, italic,
-   with a single thin rule, not a coloured highlight. */
+/* opinion: block quotation */
 .field-style-opinion {
   border-left: 2px solid var(--rule-strong);
-  padding-left: 1.1rem;
+  padding: 0.15rem 0 0.15rem 1.15rem;
+  margin: 1.75rem 0;
   background: none;
   font-style: italic;
 }
-.field-style-opinion .field-label { font-style: normal; }
+.field-style-opinion .field-label {
+  font-style: normal;
+}
+.field-style-opinion .field-text {
+  font-style: italic;
+  color: var(--ink);
+}
 
-.field-missing { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif; color: var(--muted); font-size: 0.9rem; font-style: italic; margin: 0.4rem 0; }
+.field-missing {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-style: italic;
+  margin: 0.4rem 0;
+}
 .field-missing::before { content: "[ "; }
 .field-missing::after { content: " ]"; }
-.field-render-error { color: #7a2e2e; font-style: italic; font-size: 0.92rem; }
+.field-render-error {
+  color: var(--error);
+  font-style: italic;
+  font-size: 0.92rem;
+}
 
-/* ---- issue listing ---- */
-.issue-toc { list-style: none; padding: 0; }
-.toc-item { padding: 1.4rem 0; border-top: 1px solid var(--rule); }
-.toc-item a { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif; font-size: 1.15rem; font-weight: 600; color: var(--ink); text-decoration: none; }
+/* ---- listings (home / issue) ---- */
+.issue-toc {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.toc-item {
+  padding: 1.35rem 0;
+  border-top: 1px solid var(--rule);
+}
+.toc-item:first-child { border-top: none; padding-top: 0.25rem; }
+.toc-item a {
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
 .toc-item a:hover { color: var(--accent); }
-.toc-meta { font-size: 0.9rem; font-style: italic; color: var(--muted); margin: 0.3rem 0; }
-.toc-teaser { font-size: 0.98rem; color: var(--ink); margin: 0.4rem 0 0; line-height: 1.6; }
-.toc-teaser-missing { color: var(--muted); font-style: italic; }
+.toc-meta {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--muted);
+  margin: 0.35rem 0 0;
+}
+.toc-teaser {
+  font-size: 0.98rem;
+  color: var(--ink);
+  margin: 0.45rem 0 0;
+  line-height: 1.55;
+  max-width: 38rem;
+}
+.toc-teaser-missing {
+  color: var(--muted);
+  font-style: italic;
+}
 
-/* A plain static page (About, etc.), sharing the article's academic register. */
-.prose-page { max-width: 42rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
-.prose-page h1 { font-size: 1.7rem; font-weight: 600; margin: 0 0 1.5rem; }
-.prose-page h2 { font-size: 1.15rem; font-variant: small-caps; letter-spacing: 0.03em; margin: 2rem 0 0.6rem; }
-.prose-page p { line-height: 1.65; margin: 0 0 1rem; }
+/* ---- static pages ---- */
+.prose-page h1 {
+  font-size: 1.65rem;
+  font-weight: 600;
+  line-height: 1.28;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.01em;
+}
+.prose-page h2 {
+  font-size: 0.95rem;
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  margin: 2.1rem 0 0.55rem;
+  font-weight: 600;
+}
+.prose-page p {
+  line-height: var(--leading);
+  margin: 0 0 1rem;
+}
 
-/* Homepage */
-.home .lede { font-size: 1.1rem; color: var(--muted); margin: 0 0 1rem; }
-.home .home-links { font-size: 0.95rem; margin: 0 0 2.5rem; }
-.home h2 { font-size: 1.15rem; font-variant: small-caps; letter-spacing: 0.03em; margin: 0 0 1rem; }
+.home .lede {
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin: 0 0 0.85rem;
+  line-height: 1.55;
+  max-width: 36rem;
+}
+.home .home-links {
+  font-size: 0.92rem;
+  margin: 0 0 2.25rem;
+  color: var(--muted);
+}
+.home h2 {
+  font-size: 0.95rem;
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.85rem;
+  font-weight: 600;
+}
 
-/* Issues archive */
-.issue-list { list-style: none; padding: 0; margin: 1.5rem 0; }
-.issue-list li { padding: 0.9rem 0; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.3rem 1rem; }
-.issue-list a { font-weight: 600; }
-.issue-list-date { font-size: 0.9rem; font-style: italic; color: var(--muted); }
+.issue-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.25rem 0;
+}
+.issue-list li {
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  align-items: baseline;
+}
+.issue-list a {
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+}
+.issue-list a:hover { color: var(--accent); }
+.issue-list-date {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--muted);
+}
+
+@media (max-width: 36rem) {
+  body { font-size: 1rem; }
+  .base-header h1,
+  .prose-page h1 { font-size: 1.4rem; }
+  main, .base-frame, .prose-page, .site-header, .site-footer {
+    padding-left: 1.15rem;
+    padding-right: 1.15rem;
+  }
+}

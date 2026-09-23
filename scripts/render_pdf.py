@@ -136,32 +136,63 @@ def build(article_path, out_path, doi_override=None):
     # separate sans-serif for labels), a near-monochrome palette, small-caps-style
     # section labels done via a slightly letter-spaced bold serif rather than a
     # different typeface, and no colour except a single muted brown for the DOI link.
-    INK, MUTED, ACCENT = "#1a1a1a", "#55534f", "#5c3d2e"
+    # Match web theme: ink / muted / accent, justified body, small-caps-like labels
+    INK, MUTED, ACCENT, RULE = "#1a1a1a", "#5c5a56", "#5c3d2e", "#c9c5bc"
     st = {
-        "badge": ParagraphStyle("badge", fontName=body, fontSize=9.5, textColor=MUTED, spaceAfter=12),
-        "title": ParagraphStyle("title", fontName=bold, fontSize=16.5, leading=21, spaceAfter=8, textColor=INK),
-        "authors": ParagraphStyle("authors", fontName=italic, fontSize=10.5, textColor=INK),
-        "date": ParagraphStyle("date", fontName=body, fontSize=9.5, textColor=MUTED, spaceAfter=14),
-        "label": ParagraphStyle("label", fontName=bold, fontSize=10.5, spaceBefore=13, spaceAfter=4,
-                                textColor=INK, leading=13),
-        "text": ParagraphStyle("text", fontName=body, fontSize=10.5, leading=15, alignment=TA_JUSTIFY, textColor=INK),
-        "text_italic": ParagraphStyle("text_italic", fontName=italic, fontSize=10.5, leading=15,
-                                      alignment=TA_JUSTIFY, textColor=INK, leftIndent=10),
-        "badge_value": ParagraphStyle("badge_value", fontName=italic, fontSize=10, textColor=MUTED),
-        "bullet": ParagraphStyle("bullet", fontName=body, fontSize=10.5, leading=15, leftIndent=12, bulletIndent=0, textColor=INK),
-        "footer": ParagraphStyle("footer", fontName=body, fontSize=9, textColor=MUTED, spaceBefore=10),
-        "error": ParagraphStyle("error", fontName=italic, fontSize=9.5, textColor=MUTED),
+        "badge": ParagraphStyle(
+            "badge", fontName=body, fontSize=9, leading=12, textColor=MUTED,
+            spaceAfter=10, spaceBefore=0,
+        ),
+        "title": ParagraphStyle(
+            "title", fontName=bold, fontSize=16, leading=20, spaceAfter=8,
+            spaceBefore=2, textColor=INK,
+        ),
+        "authors": ParagraphStyle(
+            "authors", fontName=italic, fontSize=10.5, leading=14,
+            textColor=INK, spaceAfter=2,
+        ),
+        "date": ParagraphStyle(
+            "date", fontName=body, fontSize=9, leading=12, textColor=MUTED,
+            spaceAfter=12,
+        ),
+        "label": ParagraphStyle(
+            "label", fontName=bold, fontSize=10, leading=13,
+            spaceBefore=14, spaceAfter=5, textColor=INK,
+        ),
+        "text": ParagraphStyle(
+            "text", fontName=body, fontSize=10.5, leading=15.5,
+            alignment=TA_JUSTIFY, textColor=INK, spaceAfter=2,
+        ),
+        "text_italic": ParagraphStyle(
+            "text_italic", fontName=italic, fontSize=10.5, leading=15.5,
+            alignment=TA_JUSTIFY, textColor=INK, leftIndent=12, spaceAfter=2,
+        ),
+        "badge_value": ParagraphStyle(
+            "badge_value", fontName=italic, fontSize=9.5, leading=12, textColor=MUTED,
+        ),
+        "bullet": ParagraphStyle(
+            "bullet", fontName=body, fontSize=10.5, leading=15.5,
+            leftIndent=14, bulletIndent=2, textColor=INK, spaceAfter=2,
+        ),
+        "footer": ParagraphStyle(
+            "footer", fontName=body, fontSize=8.5, leading=11,
+            textColor=MUTED, spaceBefore=4, spaceAfter=1,
+        ),
+        "error": ParagraphStyle(
+            "error", fontName=italic, fontSize=9, leading=12, textColor=MUTED,
+        ),
     }
     story = []
 
     # ---- STEP 9: fixed base frame, identical structure to the webpage's base frame ----
     story.append(Paragraph(
-        f"VOLUME {article['volume']}, ISSUE {article['issue']} · ARTICLE {article['order']}", st["badge"]))
+        f"VOLUME {article['volume']}, ISSUE {article['issue']} · ARTICLE {article['order']}",
+        st["badge"]))
     story.append(Paragraph(escape(article["title"]), st["title"]))
     names = ", ".join(f"{a['given']} {a['family']}" for a in article["authors"])
     story.append(Paragraph(escape(names), st["authors"]))
     story.append(Paragraph(f"Published {article['published_date']}", st["date"]))
-    story.append(HRFlowable(width="100%", thickness=0.5, color="#c9c5bc", spaceAfter=6))
+    story.append(HRFlowable(width="100%", thickness=0.6, color=RULE, spaceBefore=2, spaceAfter=10))
 
     # ---- schema-driven middle: walk the schema exactly as schema-slot.html does ----
     schema_name = article.get("schema")
@@ -207,8 +238,8 @@ def build(article_path, out_path, doi_override=None):
                         f"the expected table shape]", st["error"]))
                 else:
                     cols = field.get("columns", [])
-                    cell_style = ParagraphStyle("cell", fontName=body, fontSize=9.5, leading=13, textColor="#1a1a1a")
-                    head_style = ParagraphStyle("cellhead", fontName=bold, fontSize=9.5, leading=13, textColor="#1a1a1a")
+                    cell_style = ParagraphStyle("cell", fontName=body, fontSize=9, leading=12.5, textColor=INK)
+                    head_style = ParagraphStyle("cellhead", fontName=bold, fontSize=8.5, leading=11, textColor=MUTED)
                     data = [[Paragraph(c.capitalize(), head_style) for c in cols]] + [
                         [Paragraph(escape(str(r.get(c, ""))), cell_style) for c in cols] for r in value
                     ]
@@ -223,13 +254,19 @@ def build(article_path, out_path, doi_override=None):
                     story.append(t)
             elif shape == "boolean":
                 story.append(Paragraph("Yes" if value else "No", text_style))
+            elif shape == "date":
+                import datetime as _dt
+                if isinstance(value, (_dt.date, _dt.datetime)):
+                    story.append(Paragraph(value.strftime("%-d %B %Y"), text_style))
+                else:
+                    story.append(Paragraph(escape(str(value)), text_style))
             else:
                 story.append(Paragraph(f"[unrecognised shape: {escape(shape)}]", st["error"]))
             story.append(Spacer(1, 3))
 
     # ---- fixed footer, identical structure to the webpage's base frame ----
     story.append(Spacer(1, 10))
-    story.append(HRFlowable(width="100%", thickness=0.5, color="#c9c5bc", spaceAfter=8))
+    story.append(HRFlowable(width="100%", thickness=0.6, color=RULE, spaceBefore=8, spaceAfter=8))
     if display_doi:
         story.append(Paragraph(
             f"Pages {article['pages']} &middot; https://doi.org/{escape(str(display_doi))}",
@@ -238,8 +275,8 @@ def build(article_path, out_path, doi_override=None):
         story.append(Paragraph(f"Pages {article['pages']}", st["footer"]))
     story.append(Paragraph(f"Licence: {escape(article['licence'])}", st["footer"]))
 
-    doc = SimpleDocTemplate(out_path, pagesize=A4, leftMargin=2.2 * cm, rightMargin=2.2 * cm,
-                            topMargin=2 * cm, bottomMargin=2 * cm, title=article["title"])
+    doc = SimpleDocTemplate(out_path, pagesize=A4, leftMargin=2.4 * cm, rightMargin=2.4 * cm,
+                            topMargin=2.2 * cm, bottomMargin=2.2 * cm, title=article["title"])
     doc.build(story)
 
 

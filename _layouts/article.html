@@ -10,6 +10,7 @@ layout: null
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
 <body>
+{% include site-header.html %}
 
 {%- comment -%}
   STEP 1: base frame only. Everything in this block is fixed, schema-blind,
@@ -39,7 +40,7 @@ layout: null
       over a placeholder in the article front matter. Front-matter remains the
       fallback for manually assigned DOIs.
     {%- endcomment -%}
-    {%- assign ledger_entry = site.data.zenodo-ledger[pdf_slug] -%}
+    {%- assign ledger_entry = site.data['zenodo-ledger'][pdf_slug] -%}
     {%- assign display_doi = page.doi -%}
     {%- if ledger_entry and ledger_entry.doi -%}
       {%- assign display_doi = ledger_entry.doi -%}

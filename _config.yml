@@ -16,3 +16,4 @@ defaults:
     values: { layout: issue }
 exclude:
   - README.md
+  - CHANGELOG.md

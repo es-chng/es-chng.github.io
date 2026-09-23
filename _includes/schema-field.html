@@ -41,6 +41,9 @@
     {%- elsif field.shape == "boolean" -%}
       <p class="field-text">{% if value %}Yes{% else %}No{% endif %}</p>
 
+    {%- elsif field.shape == "date" -%}
+      <p class="field-text">{{ value | date: "%-d %B %Y" }}</p>
+
     {%- else -%}
       <p class="field-text field-unknown-shape">[unrecognised shape: {{ field.shape }}]</p>
     {%- endif -%}

@@ -112,6 +112,14 @@ def check_value_shape(field: dict, value) -> str | None:
                 return f"'{field['key']}' has a row missing column(s): {', '.join(missing)}"
     if shape == "boolean" and not isinstance(value, bool):
         return f"'{field['key']}' is declared shape 'boolean' but the value is not true/false"
+    if shape == "date":
+        import datetime as _dt
+        if isinstance(value, (_dt.date, _dt.datetime)):
+            return None
+        if isinstance(value, str) and re.match(r"^\d{4}-\d{2}-\d{2}$", value.strip()):
+            return None
+        return (f"'{field['key']}' is declared shape 'date' but the value is not a real date "
+               f"(write it unquoted, like 2026-09-01, or as a quoted YYYY-MM-DD string)")
     return None
 
 
@@ -203,6 +211,17 @@ def check_schema_locks(
 
     new_locks = dict(locks)
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    # A lock is only meaningful while at least one published article still
+    # uses that schema. If every article that earned a schema its lock is
+    # later reverted to draft or removed, the lock must be prunable -- a
+    # schema that can never become editable again, even after nothing
+    # published depends on it, is a bug, not a safety feature.
+    if update_locks:
+        stale = [name for name in new_locks if name not in published_schemas]
+        for name in stale:
+            print(f"UNLOCK {name}: no published article uses it any longer")
+            del new_locks[name]
 
     for schema_name, article_names in sorted(published_schemas.items()):
         path = schema_paths.get(schema_name)

@@ -30,6 +30,12 @@ fields:
     teaser: true
     max_chars: 200
 
+  - key: reviewed_on
+    label: "Reviewed on"
+    shape: date
+    style: plain
+    visibility: public
+
   - key: internal_note
     label: "Internal note"
     shape: text

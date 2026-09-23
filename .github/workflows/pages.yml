@@ -1,11 +1,6 @@
 name: Validate, build and publish
 
-# Runs on every push to main. Validation is a hard gate: if any article fails,
-# nothing below runs and the live site keeps the last good deploy.
-#
-# PDFs here are incremental (render_changed_pdfs). Zenodo deposit + DOI embed
-# lives in zenodo-articles.yml (runs after this workflow succeeds). Do not
-# call zenodo_articles.py here or you will double-deposit.
+# PDFs are incremental only. Zenodo deposit is in zenodo-articles.yml.
 
 on:
   push:
@@ -23,24 +18,15 @@ concurrency:
 
 jobs:
   build:
-    # Skip pure ledger-only commits from the Zenodo workflow
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install Python dependencies
-        run: pip install -r requirements.txt
+      - uses: ./.github/actions/setup-toolchain
 
       - name: Validate every article against its schema
         run: python scripts/validate_schema.py
-
-      - name: Install fonts used by the PDF renderer
-        run: sudo apt-get update && sudo apt-get install -y fonts-dejavu
 
       - uses: ruby/setup-ruby@v1
         with:
