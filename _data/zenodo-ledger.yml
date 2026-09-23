@@ -1,23 +1,23 @@
 her2-ultralow:
-  concept_doi: 10.5072/zenodo.607265
-  content_hash: c612088dad7fc2ff86d7e2024ce6a7f7f963aa63cfa68697f6cf6ddce5c992a5
-  deposited_at: '2026-09-23T04:08:54Z'
-  deposition_id: 607266
-  doi: 10.5072/zenodo.607266
+  concept_doi: 10.5072/zenodo.607299
+  content_hash: 04a3c111e8b6048724abfa5064180746c36130c82c596d1ee6640a4b8df2f0b5
+  deposited_at: '2026-09-23T04:35:38Z'
+  deposition_id: 607300
+  doi: 10.5072/zenodo.607300
   title: 'HER2-ultralow: how do I recognise it, and how sure can I be?'
 intramucosal-adenocarcinoma:
-  concept_doi: 10.5072/zenodo.607267
-  content_hash: 221a20098a0cc6c19452c6fba348bda2335450c7fcf3ad32a113a5ad6d54c42f
-  deposited_at: '2026-09-23T04:08:58Z'
-  deposition_id: 607268
-  doi: 10.5072/zenodo.607268
+  concept_doi: 10.5072/zenodo.607301
+  content_hash: 817762284ebf5237c45301a680660fb244f01169077035606c828bafd54bf06d
+  deposited_at: '2026-09-23T04:35:41Z'
+  deposition_id: 607302
+  doi: 10.5072/zenodo.607302
   title: 'Intramucosal adenocarcinoma in the colon: does the label matter?'
 mmr-ihc:
-  concept_doi: 10.5072/zenodo.607269
-  content_hash: 1a595c7fd7ada9fd76fd1cff9f94f5fa5cdc58afb0080dc31b51f48591a4bc75
-  deposited_at: '2026-09-23T04:09:01Z'
-  deposition_id: 607270
-  doi: 10.5072/zenodo.607270
+  concept_doi: 10.5072/zenodo.607303
+  content_hash: bbea860d1ef7e096942108410d73eea04e0c8510ff720056347d79b70efdb171
+  deposited_at: '2026-09-23T04:35:44Z'
+  deposition_id: 607304
+  doi: 10.5072/zenodo.607304
   title: 'Patchy MMR loss on IHC: how do I read it?'
 mock-base-only:
   concept_doi: 10.5072/zenodo.607271
@@ -34,11 +34,11 @@ mock-one-field:
   doi: 10.5072/zenodo.607274
   title: A mock article testing exactly one schema field
 scanner-validation:
-  concept_doi: 10.5072/zenodo.607275
-  content_hash: 39e0b2cb9a262920c10fc45e165fd26d011deeea28488117a5054a09bba57f3c
-  deposited_at: '2026-09-23T04:09:12Z'
-  deposition_id: 607276
-  doi: 10.5072/zenodo.607276
+  concept_doi: 10.5072/zenodo.607305
+  content_hash: 7822b121dd2f93195f9fcfc80a17f67886b2043481d8041bbe20380d045d1353
+  deposited_at: '2026-09-23T04:35:47Z'
+  deposition_id: 607306
+  doi: 10.5072/zenodo.607306
   title: 'Switching scanners: what do I need to re-validate before I trust the new
     images?'
 toy-example-article:
