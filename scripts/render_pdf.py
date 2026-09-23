@@ -122,6 +122,15 @@ def compute_col_widths(cols, available=TABLE_AVAILABLE_WIDTH, narrow=NARROW_COLU
     return [narrow_w if c in narrow else wide_w for c in cols]
 
 
+def is_placeholder_doi(doi) -> bool:
+    """True for empty/placeholder DOIs (XXXXXXX, 000…, pending) and for
+    sandbox.zenodo.org test DOIs (prefix 10.5072), which never resolve."""
+    d = str(doi or "").strip().lower()
+    if d in ("", "none", "null") or d.startswith("10.5072/"):
+        return True
+    return any(d.startswith(x) for x in ("10.5281/zenodo.000", "10.5281/zenodo.xxx", "doi:pending", "pending"))
+
+
 def build(article_path, out_path, doi_override=None):
     """
     Build one article PDF.
@@ -132,6 +141,8 @@ def build(article_path, out_path, doi_override=None):
     article = load_article(pathlib.Path(article_path))
     body, bold, italic, sans = fonts()
     display_doi = doi_override if doi_override else article.get("doi")
+    if is_placeholder_doi(display_doi):
+        display_doi = None  # e.g. "10.5281/zenodo.XXXXXXX" -- no DOI minted yet
     # Academic register, matching the webpage: one serif family throughout (no
     # separate sans-serif for labels), a near-monochrome palette, small-caps-style
     # section labels done via a slightly letter-spaced bold serif rather than a

@@ -25,7 +25,8 @@ import shutil
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from render_pdf import build  # noqa: E402
+from render_pdf import build, is_placeholder_doi  # noqa: E402
+import yaml  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MANIFEST_NAME = "manifest.json"
@@ -35,9 +36,21 @@ def file_hash(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def ledger_doi(article_path):
+    """The real DOI recorded for this article by zenodo_articles.py, if any."""
+    ledger_path = ROOT / "_data" / "zenodo-ledger.yml"
+    if not ledger_path.is_file():
+        return None
+    ledger = yaml.safe_load(ledger_path.read_text()) or {}
+    doi = (ledger.get(article_path.stem) or {}).get("doi")
+    return None if is_placeholder_doi(doi) else doi
+
+
 def combined_hash(article_path):
-    """The article's own bytes, plus its schema's bytes if it declares one."""
+    """The article's own bytes, plus its schema's bytes if it declares one,
+    plus its ledger DOI -- so the PDF is rebuilt once a real DOI is minted."""
     h = hashlib.sha256()
+    h.update(str(ledger_doi(article_path) or "").encode())
     h.update(article_path.read_bytes())
     text = article_path.read_text(encoding="utf-8")
     for line in text.splitlines():
@@ -76,7 +89,7 @@ def main():
             reused.append(path.name)
         else:
             try:
-                build(str(path), str(cached_pdf))
+                build(str(path), str(cached_pdf), doi_override=ledger_doi(path))
                 manifest[path.name] = h
                 built.append(path.name)
             except Exception as exc:  # noqa: BLE001 -- one bad article should not stop the rest

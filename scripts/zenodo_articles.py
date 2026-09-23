@@ -59,6 +59,8 @@ def is_placeholder_doi(doi) -> bool:
     if not doi:
         return True
     d = str(doi).strip().lower()
+    if d.startswith("10.5072/"):  # sandbox.zenodo.org test DOI -- never real
+        return True
     return any(d.startswith(p) for p in PLACEHOLDER_DOI_PREFIXES) or d in ("", "none", "null")
 
 
@@ -281,6 +283,9 @@ def main() -> int:
         slug = article_path.stem
         pdf_path = out_dir / f"{slug}.pdf"
         fm = load_front_matter(article_path)
+        if str(fm.get("status") or "").strip().lower() != "published":
+            print(f"SKIP  {slug}: status is not 'published' -- no DOI minted")
+            continue
         h = content_hash(article_path)
         entry = ledger.get(slug) or {}
         existing_doi = entry.get("doi")
@@ -338,7 +343,9 @@ def main() -> int:
             print(f"FAIL  {slug}: {exc}", file=sys.stderr)
             failed.append((slug, str(exc)))
 
-    if not args.dry_run and deposited:
+    if not live and deposited:
+        print("\nSandbox run: test DOIs are NOT written to the ledger or shown on the site.")
+    if not args.dry_run and live and deposited:
         save_ledger(ledger)
         print(f"\nLedger written to {LEDGER_PATH.relative_to(ROOT)}")
 

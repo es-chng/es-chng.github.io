@@ -19,7 +19,7 @@ on:
 
 permissions:
   contents: write
-  actions: read
+  actions: write   # to start a site rebuild once new DOIs are recorded
 
 concurrency:
   group: zenodo-articles
@@ -82,4 +82,11 @@ jobs:
           git add _data/zenodo-ledger.yml
           git commit -m "chore: update Zenodo DOI ledger [skip ci]" || exit 0
           BRANCH="${{ github.event.workflow_run.head_branch || github.ref_name }}"
+          # The build may have committed a schema lock since this run started.
+          git pull --rebase origin "${BRANCH}"
           git push origin "HEAD:${BRANCH}"
+          # The ledger commit is [skip ci], so start the site build explicitly:
+          # it puts the new DOI on the article page and into the site PDF.
+          gh workflow run pages.yml --ref "${BRANCH}"
+        env:
+          GH_TOKEN: ${{ github.token }}
