@@ -69,6 +69,7 @@ jobs:
 
       - name: Commit ledger if it changed
         run: |
+          set -e
           if [ ! -f _data/zenodo-ledger.yml ]; then
             echo "No ledger file."
             exit 0
@@ -77,9 +78,27 @@ jobs:
             echo "Ledger unchanged."
             exit 0
           fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add _data/zenodo-ledger.yml
           git commit -m "chore: update Zenodo DOI ledger [skip ci]" || exit 0
           BRANCH="${{ github.event.workflow_run.head_branch || github.ref_name }}"
+
+          # Keep the ledger we just produced
+          cp _data/zenodo-ledger.yml /tmp/zenodo-ledger.yml
+
+          # Move to current remote branch tip (avoids non-fast-forward)
+          git fetch origin "$BRANCH"
+          git checkout -B "$BRANCH" "origin/${BRANCH}"
+
+          cp /tmp/zenodo-ledger.yml _data/zenodo-ledger.yml
+          git add _data/zenodo-ledger.yml
+
+          if git diff --staged --quiet; then
+            echo "Ledger already up to date on remote."
+            exit 0
+          fi
+
+          git commit -m "chore: update Zenodo DOI ledger [skip ci]"
           git push origin "HEAD:${BRANCH}"
