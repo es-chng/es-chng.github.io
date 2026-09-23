@@ -21,7 +21,13 @@ Old articles stay pinned to the locked schema. See README "Published = immutable
 
 Usage:
   python scripts/validate_schema.py
-  python scripts/validate_schema.py --update-locks   # refresh schema-locks.yml
+  python scripts/validate_schema.py --update-locks   # also remove locks nothing needs
+
+Locks are created automatically: the first time an article using a schema is
+marked published, a normal run records that schema's lock in
+_data/schema-locks.yml. On GitHub the build commits that file back itself. Only two things
+stay manual on purpose: a changed locked schema is always an error, and a lock
+is only removed with --update-locks.
 """
 from __future__ import annotations
 
@@ -233,21 +239,16 @@ def check_schema_locks(
         lock = locks.get(schema_name)
 
         if lock is None:
-            # First time we see published articles on this schema → lock it
-            if update_locks:
-                new_locks[schema_name] = {
-                    "version": schema.get("version"),
-                    "content_hash": current_hash,
-                    "locked_at": now,
-                    "locked_by": sorted(article_names),
-                }
-                print(f"LOCK   {schema_name}: new lock (hash={current_hash[:12]}…)")
-            else:
-                errors.append(
-                    f"schema '{schema_name}' is used by published article(s) "
-                    f"({', '.join(article_names)}) but has no entry in "
-                    f"_data/schema-locks.yml — run: python scripts/validate_schema.py --update-locks"
-                )
+            # First published article on this schema -> lock it automatically.
+            # Creating a lock is always safe: it only records the schema as it is
+            # now. On GitHub, pages.yml commits the updated lock file back.
+            new_locks[schema_name] = {
+                "version": schema.get("version"),
+                "content_hash": current_hash,
+                "locked_at": now,
+                "locked_by": sorted(article_names),
+            }
+            print(f"LOCK   {schema_name}: locked automatically (hash={current_hash[:12]}…)")
             continue
 
         locked_hash = lock.get("content_hash")
@@ -260,12 +261,13 @@ def check_schema_locks(
                 f"or restore the locked content. "
                 f"Articles holding the lock: {', '.join(lock.get('locked_by') or article_names)}"
             )
-        elif update_locks:
-            # Refresh metadata only (hash unchanged)
+        else:
+            # Hash unchanged: keep the list of articles holding the lock current
+            # (e.g. after an article is added or renamed). Metadata only.
             new_locks[schema_name] = {
                 **lock,
                 "version": schema.get("version"),
-                "locked_by": sorted(set((lock.get("locked_by") or []) + article_names)),
+                "locked_by": sorted(article_names),
             }
 
     return errors, new_locks
@@ -307,7 +309,7 @@ def main() -> int:
         print(f"LOCK ERROR  {e}")
         total_errors += 1
 
-    if args.update_locks:
+    if args.update_locks or new_locks != locks:
         LOCKS_PATH.parent.mkdir(parents=True, exist_ok=True)
         # Preserve header comment style
         body = yaml.dump(new_locks, default_flow_style=False, sort_keys=True, allow_unicode=True)
