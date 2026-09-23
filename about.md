@@ -1,33 +1,60 @@
 ---
+
 layout: page
-title: "About"
+title: "About this microjournal"
 permalink: /about/
----
-This is a single-author publication. There is no editorial board and no peer review: every
-piece here is one author's own reading of the literature, written up and dated, and published
-under their own name.
+------------------
+
+# About this microjournal
+
+This is a single-author publication by **Ewe Seng Ch'ng, MD, MPath, FIAC, FAMM**. There is no editorial board and no peer review. Each piece represents the author's own reading of the literature, written, dated, and published under his own name.
+
+The purpose is deliberately modest: to examine specific practical questions in anatomical pathology, particularly where published evidence, guidelines, laboratory practice, and diagnostic interpretation do not always align neatly.
 
 ## What this is
 
-Each entry sets out a specific, practical problem, names the sources the author drew on, states
-what those sources support and what they do not, and separates that from the author's own
-working opinion. The **Personal perspective** section in every entry is explicitly that --
-opinion, not evidence, and not institutional guidance.
+Each entry focuses on a defined practical problem. It identifies the principal sources consulted, distinguishes what those sources support from what they do not establish, and then separates the author's interpretation from the underlying evidence.
+
+The **Personal perspective** section is explicitly the author's own view. It is not presented as evidence, consensus guidance, institutional policy, or professional-society recommendation.
+
+The articles are intentionally short. They are meant to be useful points of reference for practicing pathologists and laboratory professionals rather than comprehensive reviews of a subject.
 
 ## What this is not
 
-This is not a peer-reviewed journal. No second reader checks these entries before they are
-published. Nothing here should be treated as clinical guidance, and nothing here overrides
-your own institution's protocols or your own judgement.
+This is **not a peer-reviewed journal**. No independent reviewer or editorial board evaluates an entry before publication.
 
-## Corrections
+The content should therefore not be treated as clinical guidance, a substitute for validated laboratory procedures, or a replacement for applicable professional standards, institutional protocols, regulatory requirements, or individual professional judgement.
 
-Evidence and guidance change. Anchors cited in an entry were current as of its publication date,
-stated on the entry itself; check for more recent sources before relying on anything written
-here. If an entry is found to be wrong or out of date, a correction will be published and dated,
-and will say plainly what changed and why.
+Where evidence is limited, conflicting, or dependent on methodology, that limitation is intended to be made explicit rather than concealed behind a definitive recommendation.
+
+## About the author
+
+**Ewe Seng Ch'ng, MD, MPath, FIAC, FAMM** is an anatomical pathologist and academic based in Malaysia, with more than 15 years of experience in diagnostic anatomical pathology, including histopathology, cytopathology, breast pathology, molecular pathology, and laboratory practice.
+
+He is an **Associate Professor and Consultant Anatomical Pathologist at Universiti Sains Malaysia (USM)** and serves as a consultant pathologist and laboratory director at **Pusat Kanser Tun Abdullah Ahmad Badawi (PKTAAB), USM**.
+
+His professional work spans diagnostic pathology, pathology quality assurance, molecular oncology, breast cancer research, and the development of pathology services in a university-based cancer centre. His research interests include breast pathology, tumour microenvironment, genomics and transcriptomics, microRNA biology, aptamer-based pathology applications, and diagnostic quality.
+
+He has also been involved in pathology education, laboratory quality management, and the development and implementation of diagnostic services. His current interests increasingly include **digital pathology, computational pathology, artificial intelligence, and the practical consequences of technology and changing evidence on diagnostic pathology**.
+
+This microjournal is an extension of that practical interest: a place to examine relatively small but consequential questions in pathology that may not warrant a full review article, but deserve more careful consideration than a brief social-media discussion or informal teaching point.
+
+## Corrections and updates
+
+Evidence, classifications, guidelines, and laboratory practices change. The sources cited in an entry should therefore be understood in the context of the **publication date stated on that entry**.
+
+Readers should check for more recent evidence or guidance before relying on an older entry.
+
+If an entry is subsequently found to contain a substantive error or to have become materially outdated, a correction or update will be published and dated. Where appropriate, the correction will state clearly what has changed and why.
 
 ## Conflicts of interest
 
-Each entry discloses the author's conflicts of interest, if any, in its own **Conflicts of
-interest** section.
+Conflicts of interest, where relevant, are disclosed separately in each entry under **Conflicts of interest**.
+
+The absence of a disclosed conflict should not be interpreted as an endorsement by the author's institution or by any professional organisation with which he is affiliated.
+
+## Authorship and responsibility
+
+All entries are written and published by the author under his own name. The views expressed are his personal views and should not be assumed to represent those of USM, PKTAAB, or any other institution or organisation with which he is associated.
+
+The author takes responsibility for the interpretation and opinions expressed in each entry, while recognising that such interpretations may reasonably be debated, revised, or superseded as evidence develops.
