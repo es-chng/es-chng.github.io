@@ -88,8 +88,9 @@
   .id { display: flex; align-items: center; gap: 1rem; }
   .photo { width: 76px; height: 76px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--rule); flex: none; }
   h1 { font-family: var(--serif); font-weight: 600; font-size: 1.85rem; line-height: 1.1; margin: 0; letter-spacing: 0.005em; }
-  .post { font-style: italic; font-size: var(--fs-body); color: var(--accent); margin: 0.25rem 0 0; }
+  .post { text-align: left; font-style: italic; font-size: var(--fs-body); color: var(--accent); margin: 0.25rem 0 0; }
   .contact { text-align: right; font-family: var(--sans); font-size: var(--fs-small); color: var(--muted); line-height: 1.6; }
+  @media (min-width: 641px) { header { flex-wrap: nowrap; } .id { min-width: 0; } .contact { flex: none; } }
   @media (max-width: 640px) { .contact { text-align: left; } }
 
   p, .rows li > div { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
@@ -141,7 +142,8 @@
       </div>
     </div>
     <div class="contact">
-      <div>Universiti Sains Malaysia (USM), Penang, Malaysia</div>
+      <div>Universiti Sains Malaysia (USM)</div>
+      <div>Penang, Malaysia</div>
       <div><a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#99;&#104;&#110;&#103;&#101;&#119;&#101;&#115;&#101;&#110;&#103;&#64;&#104;&#111;&#116;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#99;&#104;&#110;&#103;&#101;&#119;&#101;&#115;&#101;&#110;&#103;&#64;&#104;&#111;&#116;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></div>
     </div>
   </header>
