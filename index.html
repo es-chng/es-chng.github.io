@@ -1,1312 +1,427 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-
-<title>Ewe Seng Ch'ng, MD, MPath, FIAC, FAMM | Anatomical Pathologist</title>
-
-<meta name="description"
-      content="Ewe Seng Ch'ng, Associate Professor and Consultant Anatomical Pathologist at Universiti Sains Malaysia. Diagnostic pathology, laboratory medicine, biomarker validation, digital pathology and breast cancer research.">
-
-<meta name="author" content="Ewe Seng Ch'ng">
-<link rel="canonical" href="https://es-chng.github.io/">
-
-<meta name="theme-color" content="#f7f7f5">
-
-<!-- Open Graph -->
-<meta property="og:type" content="profile">
-<meta property="og:site_name" content="Ewe Seng Ch'ng">
-<meta property="og:title" content="Ewe Seng Ch'ng, MD, MPath, FIAC, FAMM">
-<meta property="og:description"
-      content="Associate Professor and Consultant Anatomical Pathologist at Universiti Sains Malaysia.">
-<meta property="og:url" content="https://es-chng.github.io/">
-<meta property="og:image" content="https://es-chng.github.io/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://es-chng.github.io/og-image.png">
-
-<!-- Structured data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Ewe Seng Ch'ng",
-  "honorificSuffix": "MD, MPath, FIAC, FAMM",
-  "jobTitle": "Associate Professor and Consultant Anatomical Pathologist",
-  "url": "https://es-chng.github.io/",
-  "image": "https://es-chng.github.io/og-image.png",
-  "worksFor": {
-    "@type": "Organization",
-    "name": "Universiti Sains Malaysia"
-  },
-  "address": {
-    "@type": "PostalAddress",
-    "addressRegion": "Penang",
-    "addressCountry": "MY"
-  },
-  "sameAs": [
-    "https://scholar.google.com.my/citations?user=4vWq_ioAAAAJ",
-    "https://orcid.org/0000-0001-8831-8678",
-    "https://www.scopus.com/authid/detail.uri?authorId=6507026256",
-    "https://www.webofscience.com/wos/author/record/F-2630-2010/"
-  ]
-}
-</script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
-      rel="stylesheet">
-
 <style>
-
-:root {
-  --bg: #f6f6f3;
-  --surface: #ffffff;
-  --surface-2: #f0f0ec;
-  --ink: #19191d;
-  --muted: #696970;
-  --soft: #8a8a91;
-  --line: #deded9;
-
-  --accent: #4b3f8f;
-  --accent-dark: #362d69;
-  --accent-soft: #eeebfa;
-
-  --green: #2f6655;
-  --green-soft: #e8f1ed;
-
-  --serif: "Manrope", system-ui, sans-serif;
-  --sans: "DM Sans", system-ui, sans-serif;
-
-  --max: 1180px;
-  --radius: 18px;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 90px;
-  -webkit-text-size-adjust: 100%;
-}
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: var(--sans);
-  font-size: 15px;
-  line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--accent);
-}
-
-img {
-  max-width: 100%;
-  display: block;
-}
-
-.container {
-  width: min(var(--max), calc(100% - 48px));
-  margin: 0 auto;
-}
-
-/* --------------------------------
-   TOP NAVIGATION
--------------------------------- */
-
-.site-nav {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  backdrop-filter: blur(16px);
-  background: rgba(246,246,243,.88);
-  border-bottom: 1px solid rgba(222,222,217,.8);
-}
-
-.nav-inner {
-  min-height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.brand {
-  font-family: var(--serif);
-  font-weight: 800;
-  letter-spacing: -.025em;
-  font-size: 16px;
-}
-
-.brand span {
-  color: var(--accent);
-}
-
-.nav-links {
-  display: flex;
-  gap: 26px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--muted);
-}
-
-.nav-links a:hover {
-  color: var(--ink);
-}
-
-/* --------------------------------
-   HERO
--------------------------------- */
-
-.hero {
-  padding: 54px 0 34px;
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 310px;
-  gap: 52px;
-  align-items: center;
-}
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
-
-.eyebrow::before {
-  content: "";
-  width: 24px;
-  height: 2px;
-  background: var(--accent);
-}
-
-h1 {
-  font-family: var(--serif);
-  font-size: clamp(2.7rem, 6vw, 4.8rem);
-  line-height: .98;
-  letter-spacing: -.055em;
-  margin: 0;
-  max-width: 850px;
-}
-
-.hero-title {
-  margin-top: 18px;
-  font-size: 18px;
-  line-height: 1.45;
-  color: var(--accent);
-  font-weight: 600;
-}
-
-.hero-summary {
-  max-width: 720px;
-  margin: 18px 0 0;
-  color: var(--muted);
-  font-size: 16px;
-  line-height: 1.7;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 25px;
-}
-
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 17px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  font-size: 13px;
-  font-weight: 700;
-  transition: .18s ease;
-}
-
-.button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(0,0,0,.06);
-}
-
-.button.primary {
-  background: var(--accent);
-  color: white;
-  border-color: var(--accent);
-}
-
-/* Portrait */
-
-.hero-photo {
-  position: relative;
-}
-
-.hero-photo img {
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  border-radius: 28px;
-  background: #ddd;
-  box-shadow: 0 22px 50px rgba(30,25,50,.13);
-}
-
-.photo-label {
-  position: absolute;
-  left: 18px;
-  bottom: 18px;
-  padding: 9px 13px;
-  background: rgba(255,255,255,.92);
-  backdrop-filter: blur(10px);
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--ink);
-}
-
-/* --------------------------------
-   METRICS
--------------------------------- */
-
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin: 10px 0 42px;
-}
-
-.metric {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 15px;
-  padding: 17px 19px;
-}
-
-.metric-number {
-  font-family: var(--serif);
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: -.04em;
-}
-
-.metric-label {
-  margin-top: 2px;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-/* --------------------------------
-   SECTION SYSTEM
--------------------------------- */
-
-.section {
-  padding: 42px 0;
-  border-top: 1px solid var(--line);
-}
-
-.section-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 30px;
-  margin-bottom: 22px;
-}
-
-.section-title {
-  font-family: var(--serif);
-  font-size: 25px;
-  line-height: 1.1;
-  letter-spacing: -.035em;
-  margin: 0;
-}
-
-.section-kicker {
-  color: var(--muted);
-  font-size: 12px;
-}
-
-/* --------------------------------
-   EXPERTISE CARDS
--------------------------------- */
-
-.expertise {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-}
-
-.card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 21px;
-}
-
-.card-index {
-  color: var(--accent);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .08em;
-}
-
-.card h3 {
-  margin: 18px 0 8px;
-  font-family: var(--serif);
-  font-size: 17px;
-  letter-spacing: -.02em;
-}
-
-.card p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.65;
-}
-
-/* --------------------------------
-   EXPERIENCE
--------------------------------- */
-
-.timeline {
-  display: grid;
-  grid-template-columns: 160px minmax(0, 1fr);
-}
-
-.timeline-item {
-  display: grid;
-  grid-template-columns: 160px minmax(0, 1fr);
-  gap: 30px;
-  padding: 17px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.timeline-item:last-child {
-  border-bottom: 0;
-}
-
-.timeline-date {
-  color: var(--muted);
-  font-size: 12px;
-  font-variant-numeric: tabular-nums;
-  padding-top: 3px;
-}
-
-.timeline-role {
-  font-weight: 700;
-  font-size: 15px;
-}
-
-.timeline-org {
-  color: var(--accent);
-  font-size: 13px;
-  margin-top: 2px;
-}
-
-.timeline-description {
-  color: var(--muted);
-  font-size: 13px;
-  margin-top: 7px;
-  max-width: 760px;
-}
-
-/* --------------------------------
-   RESEARCH / PUBLICATIONS
--------------------------------- */
-
-.research-grid {
-  display: grid;
-  grid-template-columns: .8fr 1.2fr;
-  gap: 38px;
-}
-
-.research-lead {
-  font-family: var(--serif);
-  font-size: 21px;
-  line-height: 1.4;
-  letter-spacing: -.025em;
-  margin: 0;
-}
-
-.research-text {
-  color: var(--muted);
-  margin-top: 15px;
-  font-size: 13px;
-}
-
-.profile-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin-top: 20px;
-}
-
-.profile-links a {
-  padding: 7px 11px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.papers {
-  display: grid;
-  gap: 9px;
-}
-
-.paper {
-  display: grid;
-  grid-template-columns: 54px minmax(0,1fr);
-  gap: 15px;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.paper-year {
-  color: var(--muted);
-  font-size: 12px;
-  font-variant-numeric: tabular-nums;
-}
-
-.paper-title {
-  font-family: var(--serif);
-  font-size: 14px;
-  line-height: 1.45;
-}
-
-.paper-journal {
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: 11px;
-}
-
-/* --------------------------------
-   CREDENTIALS / SERVICE
--------------------------------- */
-
-.two-col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.list-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-.list-row {
-  display: grid;
-  grid-template-columns: 65px 1fr;
-  gap: 15px;
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--line);
-}
-
-.list-row:last-child {
-  border-bottom: 0;
-}
-
-.list-year {
-  color: var(--muted);
-  font-size: 11px;
-  font-variant-numeric: tabular-nums;
-}
-
-.list-text {
-  font-size: 13px;
-}
-
-/* --------------------------------
-   PUBLICATION FEATURE
--------------------------------- */
-
-.feature {
-  background: var(--accent);
-  color: white;
-  border-radius: 24px;
-  padding: 28px 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 30px;
-}
-
-.feature small {
-  display: block;
-  opacity: .7;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  font-size: 10px;
-  font-weight: 700;
-  margin-bottom: 7px;
-}
-
-.feature h2 {
-  font-family: var(--serif);
-  margin: 0;
-  font-size: 24px;
-  letter-spacing: -.035em;
-}
-
-.feature p {
-  margin: 6px 0 0;
-  opacity: .78;
-  font-size: 12px;
-}
-
-.feature a {
-  flex: none;
-  background: white;
-  color: var(--accent-dark);
-  padding: 10px 16px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-/* --------------------------------
-   FOOTER
--------------------------------- */
-
-footer {
-  padding: 28px 0 35px;
-  border-top: 1px solid var(--line);
-  margin-top: 30px;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  color: var(--muted);
-  font-size: 11px;
-}
-
-/* --------------------------------
-   RESPONSIVE
--------------------------------- */
-
-@media (max-width: 900px) {
-
-  .hero-grid {
-    grid-template-columns: 1fr 230px;
-    gap: 30px;
+  :root {
+    --bg: #FFFFFF;
+    --ink: #22202C;
+    --muted: #625F78;
+    --rule: #E4E2EB;
+    --accent: #3E2F74;
+
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --sans: "Source Sans 3", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+
+    --fs-body: 1rem;
+    --fs-small: 0.875rem;
+
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
-  .expertise {
-    grid-template-columns: repeat(2, 1fr);
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17141F;
+      --ink: #E9E6F2;
+      --muted: #A29DB8;
+      --rule: #332D45;
+      --accent: #B7A8F0;
+    }
   }
 
-  .research-grid {
-    grid-template-columns: 1fr;
-    gap: 25px;
+  :root[data-theme="dark"] {
+    --bg: #17141F;
+    --ink: #E9E6F2;
+    --muted: #A29DB8;
+    --rule: #332D45;
+    --accent: #B7A8F0;
   }
 
-}
-
-@media (max-width: 700px) {
-
-  .container {
-    width: min(100% - 30px, var(--max));
+  *, *::before, *::after {
+    box-sizing: inherit;
   }
 
-  .nav-links {
-    display: none;
+  html {
+    scroll-padding-top: env(safe-area-inset-top, 0px);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
-
-  .hero {
-    padding-top: 35px;
-  }
-
-  .hero-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-photo {
-    max-width: 220px;
-    order: -1;
-  }
-
-  h1 {
-    font-size: 3rem;
-  }
-
-  .metrics {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .two-col {
-    grid-template-columns: 1fr;
-  }
-
-  .timeline-item {
-    grid-template-columns: 95px minmax(0, 1fr);
-    gap: 15px;
-  }
-
-  .feature {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-}
-
-@media (max-width: 480px) {
 
   body {
-    font-size: 14px;
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: var(--fs-body);
+    line-height: 1.56;
+    -webkit-font-smoothing: antialiased;
   }
 
-  .container {
-    width: min(100% - 24px, var(--max));
+  a {
+    color: var(--accent);
+    text-decoration: none;
   }
 
-  .hero {
-    padding-top: 28px;
+  a:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+
+  /* =========================
+     PAGE WIDTH
+     ========================= */
+
+  .wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding:
+      1.65rem
+      clamp(1.1rem, 3vw, 2rem)
+      1.1rem;
+  }
+
+
+  /* =========================
+     HEADER
+     ========================= */
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 1rem 2rem;
+
+    flex-wrap: wrap;
+
+    padding-bottom: 0.65rem;
+
+    border-bottom: 1.5px solid var(--accent);
+  }
+
+  .id {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .photo {
+    width: 72px;
+    height: 72px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border: 1.5px solid var(--rule);
+
+    flex: none;
   }
 
   h1 {
-    font-size: 2.55rem;
+    font-family: var(--serif);
+    font-weight: 600;
+
+    font-size: 1.8rem;
+    line-height: 1.08;
+
+    margin: 0;
+
+    letter-spacing: 0.005em;
   }
 
-  .hero-title {
-    font-size: 16px;
+  .post {
+    text-align: left;
+
+    font-style: italic;
+
+    font-size: var(--fs-body);
+
+    color: var(--accent);
+
+    margin: 0.18rem 0 0;
+
+    line-height: 1.35;
   }
 
-  .hero-summary {
-    font-size: 14px;
+  .contact {
+    text-align: right;
+
+    font-family: var(--sans);
+
+    font-size: var(--fs-small);
+
+    color: var(--muted);
+
+    line-height: 1.5;
   }
 
-  .metrics {
-    gap: 8px;
+  @media (min-width: 641px) {
+    header {
+      flex-wrap: nowrap;
+    }
+
+    .id {
+      min-width: 0;
+    }
+
+    .contact {
+      flex: none;
+    }
   }
 
-  .metric {
-    padding: 14px;
+  @media (max-width: 640px) {
+    .contact {
+      text-align: left;
+    }
   }
 
-  .metric-number {
-    font-size: 22px;
+
+  /* =========================
+     BODY TEXT
+     ========================= */
+
+  p,
+  .rows li > div {
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
   }
 
-  .expertise {
-    grid-template-columns: 1fr;
+  @media (max-width: 480px) {
+    p,
+    .rows li > div {
+      text-align: left;
+    }
   }
 
-  .timeline-item {
-    grid-template-columns: 1fr;
-    gap: 4px;
+  .lede {
+    margin: 0.7rem 0 0;
+    max-width: 1000px;
   }
 
-  .paper {
-    grid-template-columns: 45px 1fr;
-    gap: 10px;
+  .pub {
+    font-family: var(--sans);
+    font-size: var(--fs-small);
+
+    color: var(--muted);
+
+    margin: 0.28rem 0 0;
   }
+
+  .pub a {
+    font-family: var(--serif);
+
+    font-size: var(--fs-body);
+
+    font-weight: 600;
+  }
+
+
+  /* =========================
+     MAIN
+     ========================= */
+
+  main {
+    margin-top: 0.65rem;
+
+    border-top: 1px solid var(--rule);
+  }
+
+  section {
+    display: grid;
+
+    grid-template-columns:
+      7.5rem
+      minmax(0, 1fr);
+
+    gap: 0.2rem 1.35rem;
+
+    padding: 0.68rem 0;
+
+    border-bottom: 1px solid var(--rule);
+  }
+
+  section:last-of-type {
+    border-bottom: 0;
+  }
+
+  @media (max-width: 600px) {
+    section {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+    }
+  }
+
+  h2 {
+    font-family: var(--sans);
+
+    font-weight: 600;
+
+    font-size: var(--fs-small);
+
+    letter-spacing: 0.01em;
+
+    line-height: 1.35;
+
+    color: var(--accent);
+
+    margin: 0;
+
+    padding-top: 0.1rem;
+  }
+
+  p {
+    margin: 0 0 0.28rem;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  b {
+    font-weight: 600;
+  }
+
+
+  /* =========================
+     ROWS
+     ========================= */
+
+  .rows {
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+  }
+
+  .rows li {
+    display: grid;
+
+    grid-template-columns:
+      6rem
+      minmax(0, 1fr);
+
+    gap: 0.75rem;
+
+    padding: 0.04rem 0;
+  }
+
+  .rows li + li {
+    margin-top: 0.28rem;
+  }
+
+  .when,
+  .label {
+    font-family: var(--sans);
+
+    color: var(--muted);
+
+    font-size: var(--fs-small);
+
+    font-variant-numeric: tabular-nums;
+
+    padding-top: 0.1rem;
+  }
+
+  .label {
+    color: var(--ink);
+
+    font-weight: 600;
+  }
+
+  .org {
+    color: var(--muted);
+  }
+
+  @media (max-width: 460px) {
+    .rows li {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .when,
+    .label {
+      padding-top: 0;
+    }
+  }
+
+
+  /* =========================
+     SUPPORTING TEXT
+     ========================= */
+
+  .muted {
+    color: var(--muted);
+  }
+
+  .note {
+    font-family: var(--sans);
+
+    font-size: var(--fs-small);
+
+    margin-top: 0.35rem;
+  }
+
+  .links {
+    font-family: var(--sans);
+
+    font-size: var(--fs-small);
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 0.25rem 1.1rem;
+  }
+
+
+  /* =========================
+     FOOTER
+     ========================= */
 
   footer {
-    flex-direction: column;
+    margin-top: 0.55rem;
+
+    padding-top: 0.55rem;
+
+    border-top: 1px solid var(--rule);
+
+    color: var(--muted);
+
+    font-family: var(--sans);
+
+    font-size: var(--fs-small);
   }
 
-}
 
-@media print {
+  /* =========================
+     PRINT
+     ========================= */
 
-  .site-nav,
-  .hero-actions {
-    display: none;
+  @media print {
+
+    :root {
+      --fs-body: 10pt;
+      --fs-small: 9pt;
+    }
+
+    .wrap {
+      padding-top: 0;
+      max-width: none;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    section {
+      break-inside: avoid;
+    }
   }
-
-  body {
-    background: white;
-  }
-
-  .container {
-    width: 100%;
-  }
-
-}
-
 </style>
-</head>
-
-<body>
-
-<nav class="site-nav">
-  <div class="container nav-inner">
-
-    <a class="brand" href="/">
-      Ewe Seng <span>Ch'ng</span>
-    </a>
-
-    <div class="nav-links">
-      <a href="#expertise">Expertise</a>
-      <a href="#experience">Experience</a>
-      <a href="#research">Research</a>
-      <a href="#credentials">Credentials</a>
-      <a href="https://es-chng.github.io/practicalpathologyinfocus/">
-        Practical Pathology in Focus
-      </a>
-    </div>
-
-  </div>
-</nav>
-
-<main>
-
-<!-- HERO -->
-
-<section class="hero">
-  <div class="container hero-grid">
-
-    <div>
-
-      <div class="eyebrow">
-        Anatomical Pathology · Malaysia
-      </div>
-
-      <h1>
-        Ewe Seng Ch'ng
-      </h1>
-
-      <div class="hero-title">
-        MD, MPath, FIAC, FAMM<br>
-        Associate Professor & Consultant Anatomical Pathologist
-      </div>
-
-      <p class="hero-summary">
-        Diagnostic anatomical pathologist, laboratory leader and translational
-        cancer researcher at Universiti Sains Malaysia. Clinical interests
-        include breast and oncologic pathology, biomarker validation and
-        molecular pathology, with a particular focus on the tumour
-        microenvironment.
-      </p>
-
-      <div class="hero-actions">
-        <a class="button primary"
-           href="mailto:chngeweseng@hotmail.com">
-          Contact
-        </a>
-
-        <a class="button"
-           href="https://scholar.google.com.my/citations?user=4vWq_ioAAAAJ">
-          Google Scholar
-        </a>
-
-        <a class="button"
-           href="https://orcid.org/0000-0001-8831-8678">
-          ORCID
-        </a>
-      </div>
-
-    </div>
-
-    <div class="hero-photo">
-
-      <!-- Replace with your actual portrait -->
-      <img
-        src="/assets/profile.jpg"
-        alt="Portrait of Ewe Seng Ch'ng">
-
-      <div class="photo-label">
-        Universiti Sains Malaysia · Penang
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- METRICS -->
-
-<section class="container metrics">
-
-  <div class="metric">
-    <div class="metric-number">15+</div>
-    <div class="metric-label">Years in diagnostic pathology</div>
-  </div>
-
-  <div class="metric">
-    <div class="metric-number">2,332</div>
-    <div class="metric-label">Google Scholar citations · Jan 2026</div>
-  </div>
-
-  <div class="metric">
-    <div class="metric-number">20</div>
-    <div class="metric-label">h-index · Google Scholar</div>
-  </div>
-
-  <div class="metric">
-    <div class="metric-number">RM1.5M+</div>
-    <div class="metric-label">Research funding as PI</div>
-  </div>
-
-</section>
-
-
-<!-- EXPERTISE -->
-
-<section class="section" id="expertise">
-  <div class="container">
-
-    <div class="section-head">
-      <h2 class="section-title">Areas of practice</h2>
-      <div class="section-kicker">Clinical · Laboratory · Research</div>
-    </div>
-
-    <div class="expertise">
-
-      <article class="card">
-        <div class="card-index">01</div>
-        <h3>Diagnostic Pathology</h3>
-        <p>
-          Histopathology, cytopathology, frozen section and ROSE,
-          with particular experience in breast and oncologic pathology.
-        </p>
-      </article>
-
-      <article class="card">
-        <div class="card-index">02</div>
-        <h3>Biomarker Medicine</h3>
-        <p>
-          Biomarker assay development and validation, including
-          HER2 IHC and FISH workflows and translational diagnostics.
-        </p>
-      </article>
-
-      <article class="card">
-        <div class="card-index">03</div>
-        <h3>Laboratory Leadership</h3>
-        <p>
-          ISO 15189 laboratory direction, quality systems, EQA,
-          technical assessment and multidisciplinary laboratory operations.
-        </p>
-      </article>
-
-      <article class="card">
-        <div class="card-index">04</div>
-        <h3>Translational Research</h3>
-        <p>
-          Breast cancer biology, tumour microenvironment, microRNA,
-          aptamer diagnostics and molecular pathology.
-        </p>
-      </article>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- EXPERIENCE -->
-
-<section class="section" id="experience">
-  <div class="container">
-
-    <div class="section-head">
-      <h2 class="section-title">Professional experience</h2>
-      <div class="section-kicker">Selected appointments</div>
-    </div>
-
-    <div class="timeline">
-
-      <div class="timeline-item">
-
-        <div class="timeline-date">2023 — present</div>
-
-        <div>
-          <div class="timeline-role">
-            Associate Professor · Consultant Pathologist · Laboratory Director
-          </div>
-
-          <div class="timeline-org">
-            Tun Abdullah Ahmad Badawi Cancer Centre, USM
-          </div>
-
-          <div class="timeline-description">
-            Directs a six-discipline ISO 15189 laboratory and leads
-            anatomical pathology services including diagnostic histopathology,
-            cytopathology and biomarker testing. Established and validated
-            HER2 FISH capability.
-          </div>
-        </div>
-
-      </div>
-
-
-      <div class="timeline-item">
-
-        <div class="timeline-date">2012 — 2022</div>
-
-        <div>
-          <div class="timeline-role">
-            Medical Lecturer & Pathologist
-          </div>
-
-          <div class="timeline-org">
-            Universiti Sains Malaysia · AMDI / School of Medical Sciences
-          </div>
-
-          <div class="timeline-description">
-            Developed molecular pathology capability and established
-            diagnostic laboratory infrastructure, including the university's
-            COVID-19 diagnostic laboratory.
-          </div>
-        </div>
-
-      </div>
-
-
-      <div class="timeline-item">
-
-        <div class="timeline-date">2004 — 2012</div>
-
-        <div>
-          <div class="timeline-role">
-            Clinical & Specialty Training
-          </div>
-
-          <div class="timeline-org">
-            Osaka University Hospital · Hospital Pulau Pinang · USM
-          </div>
-
-          <div class="timeline-description">
-            Medical education, clinical training and postgraduate specialty
-            training in anatomical pathology.
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- RESEARCH -->
-
-<section class="section" id="research">
-  <div class="container">
-
-    <div class="section-head">
-      <h2 class="section-title">Research & publications</h2>
-      <div class="section-kicker">Breast cancer · Molecular pathology</div>
-    </div>
-
-    <div class="research-grid">
-
-      <div>
-
-        <p class="research-lead">
-          Translational pathology connecting diagnostic practice,
-          biomarkers and cancer biology.
-        </p>
-
-        <p class="research-text">
-          More than 50 publications spanning breast cancer pathology,
-          tumour-associated macrophages, microRNA, molecular diagnostics,
-          aptamer technology and translational oncology.
-        </p>
-
-        <p class="research-text">
-          Principal investigator on FRGS and PRGS projects, with more than
-          RM1.5 million in research funding and Malaysian patents relating
-          to aptamer diagnostics.
-        </p>
-
-        <div class="profile-links">
-          <a href="https://scholar.google.com.my/citations?user=4vWq_ioAAAAJ">
-            Google Scholar
-          </a>
-          <a href="https://orcid.org/0000-0001-8831-8678">
-            ORCID
-          </a>
-          <a href="https://www.scopus.com/authid/detail.uri?authorId=6507026256">
-            Scopus
-          </a>
-          <a href="https://www.webofscience.com/wos/author/record/F-2630-2010/">
-            Web of Science
-          </a>
-        </div>
-
-      </div>
-
-
-      <div class="papers">
-
-        <article class="paper">
-
-          <div class="paper-year">2026</div>
-
-          <div>
-            <a class="paper-title"
-               href="https://www.mjpath.org.my/2026/v48n2/metastatic-breast-cancer.pdf">
-              HER2 ultralow in metastatic breast cancer:
-              diagnostic boundaries in the era of antibody–drug conjugates.
-            </a>
-
-            <div class="paper-journal">
-              Ch'ng ES · Malaysian Journal of Pathology 2026;48(2)
-            </div>
-          </div>
-
-        </article>
-
-
-        <article class="paper">
-
-          <div class="paper-year">2026</div>
-
-          <div>
-            <a class="paper-title"
-               href="https://www.mjpath.org.my/2026/v48n2/digital-pathology.pdf">
-              Navigating the legal and regulatory landscape
-              for digital pathology in Malaysia.
-            </a>
-
-            <div class="paper-journal">
-              Abdul Rahman NR, Othman NH, Ch'ng ES ·
-              Malaysian Journal of Pathology 2026;48(2):233–239
-            </div>
-          </div>
-
-        </article>
-
-
-        <article class="paper">
-
-          <div class="paper-year">2025</div>
-
-          <div>
-            <a class="paper-title"
-               href="https://doi.org/10.1002/gcc.70027">
-              Profiling precursor microRNAs of breast cancer from total
-              RNA sequencing data to gain insights into their roles
-              and prognostic values.
-            </a>
-
-            <div class="paper-journal">
-              Wu S et al. · Genes, Chromosomes and Cancer 2025;64(2):e70027
-            </div>
-          </div>
-
-        </article>
-
-
-        <article class="paper">
-
-          <div class="paper-year">2024</div>
-
-          <div>
-            <a class="paper-title"
-               href="https://doi.org/10.1007/s12282-024-01564-8">
-              Prognosis of primary breast salivary gland-type carcinoma:
-              a propensity score-matching analysis.
-            </a>
-
-            <div class="paper-journal">
-              Ch'ng ES · Breast Cancer 2024;31(3):496–506
-            </div>
-          </div>
-
-        </article>
-
-
-        <article class="paper">
-
-          <div class="paper-year">2022</div>
-
-          <div>
-            <a class="paper-title"
-               href="https://doi.org/10.3390/ijms23136994">
-              An eleven-microRNA signature related to tumor-associated
-              macrophages predicts prognosis of breast cancer.
-            </a>
-
-            <div class="paper-journal">
-              Jayasingam SD et al. · International Journal of Molecular
-              Sciences 2022;23(13):6994
-            </div>
-          </div>
-
-        </article>
-
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- CREDENTIALS -->
-
-<section class="section" id="credentials">
-  <div class="container">
-
-    <div class="section-head">
-      <h2 class="section-title">Credentials & service</h2>
-      <div class="section-kicker">Professional appointments</div>
-    </div>
-
-    <div class="two-col">
-
-      <div class="list-card">
-
-        <div class="list-row">
-          <div class="list-year">2026</div>
-          <div class="list-text">
-            Fellow, College of Pathologists,
-            Academy of Medicine of Malaysia
-          </div>
-        </div>
-
-        <div class="list-row">
-          <div class="list-year">2017</div>
-          <div class="list-text">
-            Fellow, International Academy of Cytology (FIAC)
-          </div>
-        </div>
-
-        <div class="list-row">
-          <div class="list-year">2013</div>
-          <div class="list-text">
-            Registered Specialist, Anatomical Pathology,
-            National Specialist Register
-          </div>
-        </div>
-
-        <div class="list-row">
-          <div class="list-year">2012</div>
-          <div class="list-text">
-            Master of Pathology (Anatomic Pathology),
-            Universiti Sains Malaysia
-          </div>
-        </div>
-
-        <div class="list-row">
-          <div class="list-year">2004</div>
-          <div class="list-text">
-            Doctor of Medicine, Osaka University, Japan
-          </div>
-        </div>
-
-      </div>
-
-
-      <div class="list-card">
-
-        <div class="list-row">
-          <div class="list-year">EQA</div>
-          <div class="list-text">
-            Programme Manager, IAPMD EQA Programme
-          </div>
-        </div>
-
-        <div class="list-row">
-          <div class="list-year">Academic</div>
-          <div class="list-text">
-            Examiner, Master of Pathology
-          </div>
-        </div>
-
-        <div class="list-row">
-          <div class="list-year">Society</div>
-          <div class="list-text">
-            Vice President, Malaysia Society of RNA Science
-          </div>
-        </div>
-
-        <div class="list-row">
-          <div class="list-year">Review</div>
-          <div class="list-text">
-            Grant reviewer and scientific reviewer
-          </div>
-        </div>
-
-        <div class="list-row">
-          <div class="list-year">Awards</div>
-          <div class="list-text">
-            Gold and Special Awards, Malaysia Technology Expo;
-            Best Poster, NUHS–MD Anderson Pathology Update
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- PUBLICATION -->
-
-<section class="container" style="padding-top: 10px;">
-
-  <div class="feature">
-
-    <div>
-      <small>Independent publication</small>
-
-      <h2>
-        Practical Pathology in Focus
-      </h2>
-
-      <p>
-        Evidence-aware practical discussions in anatomical pathology.
-      </p>
-    </div>
-
-    <a href="https://es-chng.github.io/practicalpathologyinfocus/">
-      Explore publication →
-    </a>
-
-  </div>
-
-</section>
-
-</main>
-
-
-<footer class="container">
-
-  <div>
-    Ewe Seng Ch'ng · Universiti Sains Malaysia · Penang, Malaysia
-  </div>
-
-  <div>
-    Last updated October 2026
-  </div>
-
-</footer>
-
-</body>
-</html>
